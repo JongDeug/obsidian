@@ -1,0 +1,45 @@
+{
+	"compiler": {
+		"version": "0.8.13+commit.abaa5c0e"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"lecture/lec33.sol": "lec33"
+		},
+		"evmVersion": "london",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"lecture/lec33.sol": {
+			"keccak256": "0xe27f75c342f47fed02816ef976f9d97451ee93d10e2c4f388795ef05af53a220",
+			"license": "GPL-3.0",
+			"urls": [
+				"bzz-raw://cb72b64f75df7c313c2c072018e67e2ec0c2c62e9483a81dc7b67d71abb17865",
+				"dweb:/ipfs/QmXhLkzVy6CQSCTVnJgZ5cPm6jPBdJVEofFbY3pfup9G1v"
+			]
+		}
+	},
+	"version": 1
+}

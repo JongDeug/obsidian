@@ -1,0 +1,45 @@
+{
+	"compiler": {
+		"version": "0.8.7+commit.e28d00a7"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"lecture/lec27.sol": "lec27"
+		},
+		"evmVersion": "london",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"lecture/lec27.sol": {
+			"keccak256": "0xa0b63d13672b7a8db2147d624814687a768c79c3c6a1856f3bd2fcc02585fe39",
+			"license": "GPL-3.0",
+			"urls": [
+				"bzz-raw://5b0052fec16c25884b01e44c123d8a4bae82c7fd378448e517a2bf93b45cbed6",
+				"dweb:/ipfs/QmV24Cto5VNLKkzYKBGhfTHho4d6EHeR6jqtbkyyb9oY7p"
+			]
+		}
+	},
+	"version": 1
+}
