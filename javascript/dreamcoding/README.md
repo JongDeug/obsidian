@@ -40,3 +40,12 @@ var obj = {
 obj.show();
 
 ```
+
+화살표 함수를 쓰면 안될 때
+```
+const person = {
+	name: 'Lee',
+	sayHi: () => console.log(`Hi ${this.name}`)
+};
+person.sayHi(); // Hi undefined
+```
