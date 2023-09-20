@@ -1,3 +1,16 @@
+## 이해 되지 않은 코드 수정
+https://www.typescriptlang.org/docs/handbook/2/classes.html#index-signatures
+```
+type check = (s: string) => boolean;
+
+class MyClass {
+    [s: string]: boolean | check;
+
+    check: check = (s) => {
+        return this[s] as boolean;
+    }
+}
+```
 ## is 키워드?
 
 https://www.typescriptlang.org/docs/handbook/2/classes.html#this-based-type-guards
