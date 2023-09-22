@@ -4,16 +4,16 @@
     "type": "split",
     "children": [
       {
-        "id": "fddaaa06fc76c280",
+        "id": "d683542354633254",
         "type": "tabs",
         "children": [
           {
-            "id": "d83c4fc2137ec8a6",
+            "id": "ab10b63abaa6bbe4",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "public/linux(ob)/명령어 모음.md",
+                "file": "4.archive/README.md",
                 "mode": "source",
                 "source": false
               }
@@ -85,7 +85,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "public/linux(ob)/명령어 모음.md",
+                "file": "4.archive/README.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -102,7 +102,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "public/linux(ob)/명령어 모음.md",
+                "file": "4.archive/README.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -125,7 +125,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "public/linux(ob)/명령어 모음.md"
+                "file": "4.archive/README.md"
               }
             }
           }
@@ -146,36 +146,40 @@
       "command-palette:명령어 팔레트 열기": false
     }
   },
-  "active": "d83c4fc2137ec8a6",
+  "active": "ab10b63abaa6bbe4",
   "lastOpenFiles": [
+    "3.resource/README.md",
+    "4.archive/README.md",
+    "2.area/README.md",
+    "1.project/README.md",
+    "README.md",
+    "무제 파일.md",
+    "1.project",
+    "4.archive",
+    "3.resource",
+    "2.area",
+    "3.resource/linux(ob)/명령어 모음.md",
+    "1.project",
     "hello/hi",
     "hello",
     "hi",
     "hi.txt",
     "date.txt",
-    "month.txt",
-    "public/linux(ob)/linux-filesystem-hierarchy.png",
-    "public/linux(ob)/명령어 모음.md",
+    "3.resource/linux(ob)/linux-filesystem-hierarchy.png",
     "public/linux/명령어/명.md",
-    "public/linux/명령어",
-    "public/linux(ob)/Linux-Directory-Structure.jpeg",
-    "public/javascript/dreamcoding/1.variable/img/객체의 메모리 할당.png",
-    "public/javascript/dreamcoding/1.variable/img/메모리 영역.png",
-    "public/html-css/webstandard/README.md",
-    "README.md",
+    "3.resource/linux(ob)/Linux-Directory-Structure.jpeg",
+    "3.resource/javascript/dreamcoding/1.variable/img/객체의 메모리 할당.png",
+    "3.resource/javascript/dreamcoding/1.variable/img/메모리 영역.png",
+    "3.resource/html-css/webstandard/README.md",
     "html-and-css/webstandard/fonts/lg.svg",
-    "public/html-css/webstandard/tutor-web/web203.html",
-    "public/html-css/webstandard/tutor-web/web202.html",
-    "public/html-css/webstandard/tutor-web/web201.html",
-    "public/html-css/webstandard/tutor-web/web200.html",
-    "public/html-css/webstandard/img/webstandard3.jpg",
-    "public/html-css/webstandard/img/webstandard2.jpg",
-    "public/html-css/webstandard/img/webstandard1.jpg",
-    "public/html-css/webstandard/img/sban09.jpg",
-    "public/html-css/webstandard/img/sban08.jpg",
-    "public/javascript/dreamcoding/README.md",
-    "public/typescript/ts-all-in-one/README.md",
-    "public/typescript/study-handbook/README.md",
-    "public/solidity/youtube-solidity/README.md"
+    "3.resource/html-css/webstandard/img/webstandard3.jpg",
+    "3.resource/html-css/webstandard/img/webstandard2.jpg",
+    "3.resource/html-css/webstandard/img/webstandard1.jpg",
+    "3.resource/html-css/webstandard/img/sban09.jpg",
+    "3.resource/html-css/webstandard/img/sban08.jpg",
+    "3.resource/javascript/dreamcoding/README.md",
+    "3.resource/typescript/ts-all-in-one/README.md",
+    "3.resource/typescript/study-handbook/README.md",
+    "3.resource/solidity/youtube-solidity/README.md"
   ]
 }
