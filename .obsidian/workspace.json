@@ -13,7 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "README.md",
+                "file": "public/linux(ob)/명령어 모음.md",
                 "mode": "source",
                 "source": false
               }
@@ -85,7 +85,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "README.md",
+                "file": "public/linux(ob)/명령어 모음.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -102,7 +102,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "README.md",
+                "file": "public/linux(ob)/명령어 모음.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -125,7 +125,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "README.md"
+                "file": "public/linux(ob)/명령어 모음.md"
               }
             }
           }
@@ -148,28 +148,31 @@
   },
   "active": "d83c4fc2137ec8a6",
   "lastOpenFiles": [
+    "hello/hi",
+    "hello",
+    "hi",
+    "hi.txt",
+    "date.txt",
+    "month.txt",
+    "public/linux(ob)/linux-filesystem-hierarchy.png",
+    "public/linux(ob)/명령어 모음.md",
+    "public/linux/명령어/명.md",
+    "public/linux/명령어",
+    "public/linux(ob)/Linux-Directory-Structure.jpeg",
+    "public/javascript/dreamcoding/1.variable/img/객체의 메모리 할당.png",
+    "public/javascript/dreamcoding/1.variable/img/메모리 영역.png",
+    "public/html-css/webstandard/README.md",
+    "README.md",
     "html-and-css/webstandard/fonts/lg.svg",
-    "public/html-and-css/webstandard/tutor-web/web203.html",
-    "public/html-and-css/webstandard/tutor-web/web202.html",
-    "public/html-and-css/webstandard/tutor-web/web201.html",
-    "public/html-and-css/webstandard/tutor-web/web200.html",
-    "public/html-and-css/webstandard/tutor-web/web199.html",
-    "public/html-and-css/webstandard/tutor-web/web198.html",
-    "public/html-and-css/webstandard/tutor-web/web197.html",
-    "public/html-and-css/webstandard/tutor-web/web196.html",
-    "public/html-and-css/webstandard/tutor-web/web195.html",
-    "public/html-and-css/webstandard/tutor-web/web194.html",
-    "public/html-and-css/webstandard/img/webstandard3.jpg",
-    "public/html-and-css/webstandard/img/webstandard2.jpg",
-    "public/html-and-css/webstandard/img/webstandard1.jpg",
-    "public/html-and-css/webstandard/img/sban09.jpg",
-    "public/html-and-css/webstandard/img/sban08.jpg",
-    "public/html-and-css/webstandard/img/sban07.jpg",
-    "public/html-and-css/webstandard/img/sban06.jpg",
-    "public/html-and-css/webstandard/img/sban05.jpg",
-    "public/html-and-css/webstandard/img/sban04.jpg",
-    "public/html-and-css/webstandard/img/sban03.jpg",
-    "public/html-and-css/webstandard/README.md",
+    "public/html-css/webstandard/tutor-web/web203.html",
+    "public/html-css/webstandard/tutor-web/web202.html",
+    "public/html-css/webstandard/tutor-web/web201.html",
+    "public/html-css/webstandard/tutor-web/web200.html",
+    "public/html-css/webstandard/img/webstandard3.jpg",
+    "public/html-css/webstandard/img/webstandard2.jpg",
+    "public/html-css/webstandard/img/webstandard1.jpg",
+    "public/html-css/webstandard/img/sban09.jpg",
+    "public/html-css/webstandard/img/sban08.jpg",
     "public/javascript/dreamcoding/README.md",
     "public/typescript/ts-all-in-one/README.md",
     "public/typescript/study-handbook/README.md",
