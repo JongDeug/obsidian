@@ -1,0 +1,178 @@
+{
+  "main": {
+    "id": "accc37c9d938d2ed",
+    "type": "split",
+    "children": [
+      {
+        "id": "fddaaa06fc76c280",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "d83c4fc2137ec8a6",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "README.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "323f5ef9039bb424",
+    "type": "split",
+    "children": [
+      {
+        "id": "4057e312cf827401",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "93eb7a23844fdf52",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "edb1a82a05b7c1b7",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "74ae5602f3d50336",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {}
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "ae80750f4753f76b",
+    "type": "split",
+    "children": [
+      {
+        "id": "a5f1aa8412cf9bcc",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "ecaab8578c3ed6d1",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "README.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "971d19899c267fcb",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "README.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "28a0c024b382caf6",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true
+              }
+            }
+          },
+          {
+            "id": "a9a8954a1e1a8236",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "README.md"
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:퀵 스위처 열기": false,
+      "graph:그래프 뷰 열기": false,
+      "canvas:새 캔버스 만들기": false,
+      "daily-notes:오늘의 데일리 노트 열기": false,
+      "templates:템플릿 삽입": false,
+      "command-palette:명령어 팔레트 열기": false
+    }
+  },
+  "active": "d83c4fc2137ec8a6",
+  "lastOpenFiles": [
+    "html-and-css/webstandard/fonts/lg.svg",
+    "public/html-and-css/webstandard/tutor-web/web203.html",
+    "public/html-and-css/webstandard/tutor-web/web202.html",
+    "public/html-and-css/webstandard/tutor-web/web201.html",
+    "public/html-and-css/webstandard/tutor-web/web200.html",
+    "public/html-and-css/webstandard/tutor-web/web199.html",
+    "public/html-and-css/webstandard/tutor-web/web198.html",
+    "public/html-and-css/webstandard/tutor-web/web197.html",
+    "public/html-and-css/webstandard/tutor-web/web196.html",
+    "public/html-and-css/webstandard/tutor-web/web195.html",
+    "public/html-and-css/webstandard/tutor-web/web194.html",
+    "public/html-and-css/webstandard/img/webstandard3.jpg",
+    "public/html-and-css/webstandard/img/webstandard2.jpg",
+    "public/html-and-css/webstandard/img/webstandard1.jpg",
+    "public/html-and-css/webstandard/img/sban09.jpg",
+    "public/html-and-css/webstandard/img/sban08.jpg",
+    "public/html-and-css/webstandard/img/sban07.jpg",
+    "public/html-and-css/webstandard/img/sban06.jpg",
+    "public/html-and-css/webstandard/img/sban05.jpg",
+    "public/html-and-css/webstandard/img/sban04.jpg",
+    "public/html-and-css/webstandard/img/sban03.jpg",
+    "public/html-and-css/webstandard/README.md",
+    "public/javascript/dreamcoding/README.md",
+    "public/typescript/ts-all-in-one/README.md",
+    "public/typescript/study-handbook/README.md",
+    "public/solidity/youtube-solidity/README.md"
+  ]
+}
