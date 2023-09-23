@@ -18,8 +18,21 @@
                 "source": false
               }
             }
+          },
+          {
+            "id": "cb3801f5b9f292f5",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "conflict-files-obsidian-git.md",
+                "mode": "source",
+                "source": false
+              }
+            }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -85,7 +98,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "1.project/README.md",
+                "file": "conflict-files-obsidian-git.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -102,7 +115,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "1.project/README.md",
+                "file": "conflict-files-obsidian-git.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -125,7 +138,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "1.project/README.md"
+                "file": "conflict-files-obsidian-git.md"
               }
             }
           }
@@ -148,13 +161,34 @@
       "obsidian-excalidraw-plugin:Create new drawing": false
     }
   },
-  "active": "f0335a8e0bf8e61a",
+  "active": "cb3801f5b9f292f5",
   "lastOpenFiles": [
-    "excalidraw/Drawing 2023-09-23 16.01.14.excalidraw.md",
-    "1.project/README.md",
-    "excalidraw",
-    "conflict-files-obsidian-git.md",
+    "memo/포폴 임시/JoinUs.md",
+    "memo/포폴 임시/세모반.md",
+    "idea/타자 프로그램(블록체인 코인).md",
+    "idea/볼링 플랫폼 사업.md",
+    "idea/노트북 케이스 사업.md",
     "1.project/취업.md",
+    "1.project/README.md",
+    "conflict-files-obsidian-git.md",
+    "memo/TIL/구글 검색 명령어.md",
+    "memo/TIL/WSL npm 속도 문제.md",
+    "memo/TIL/Webstorm Tailwind Autocomplete.md",
+    "memo/TIL/RDB NOSQL.md",
+    "memo/TIL/Vite.md",
+    "memo/TIL/Runtime CompileTime.md",
+    "memo/TIL/ngrok more than 1 port.md",
+    "memo/TIL/Mysql, Mongodb linux 명령어.md",
+    "memo/TIL/Git vs Github.md",
+    "memo/TIL/Git.md",
+    "memo/TIL/CS link.md",
+    "memo/영어 공부법.md",
+    "memo/포폴 임시",
+    "memo/TIL",
+    "memo",
+    "idea",
+    "excalidraw/Drawing 2023-09-23 16.01.14.excalidraw.md",
+    "excalidraw",
     "attached-file/ws.png",
     "attached-file/vite.png",
     "attached-file/Untitled (6).png",
@@ -170,15 +204,10 @@
     "3.resource/solidity/youtube-solidity/lecture/artifacts/build-info/f913272b106e85455e02e6589589e715.json",
     "3.resource/solidity/youtube-solidity/lecture/artifacts/build-info/ff21dc3c84e457bbe47a5c49e7ac6c66.json",
     "3.resource/solidity/youtube-solidity/lecture/artifacts/build-info/fa91eb555f1cf33f030ab35ebc589ef5.json",
-    "3.resource/solidity/youtube-solidity/lecture/artifacts/build-info/f77c301af15cc1cb9a4546c11c0d2e1d.json",
-    "3.resource/solidity/youtube-solidity/lecture/artifacts/build-info/f325857ae7d5ca11ecc5bc4fe4f646b0.json",
-    "3.resource/solidity/youtube-solidity/lecture/artifacts/build-info/f5bf4e9131b98a31902eea0e9f10e46b.json",
-    "3.resource/solidity/youtube-solidity/lecture/artifacts/build-info/f83bf89e3e29133fb37a0f6820cff8c5.json",
     "3.resource/solidity/youtube-solidity/README.md",
     "3.resource/javascript/dreamcoding/README.md",
     "3.resource/http/HTTP.md",
     "3.resource/html-css/webstandard/README.md",
-    "3.resource/README.md",
-    "2.area/README.md"
+    "3.resource/README.md"
   ]
 }
