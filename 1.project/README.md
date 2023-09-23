@@ -15,3 +15,8 @@ test
 test 1
 
 test 3
+<<<<<<< HEAD
+=======
+
+test 4
+>>>>>>> origin/main

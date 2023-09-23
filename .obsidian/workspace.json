@@ -18,8 +18,21 @@
                 "source": false
               }
             }
+          },
+          {
+            "id": "da3824b6ab28dd0a",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "conflict-files-obsidian-git.md",
+                "mode": "source",
+                "source": false
+              }
+            }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -85,7 +98,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "1.project/README.md",
+                "file": "conflict-files-obsidian-git.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -102,7 +115,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "1.project/README.md",
+                "file": "conflict-files-obsidian-git.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -125,7 +138,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "1.project/README.md"
+                "file": "conflict-files-obsidian-git.md"
               }
             }
           },
@@ -156,11 +169,11 @@
       "obsidian-excalidraw-plugin:Create new drawing": false
     }
   },
-  "active": "c13c489f9f35d83b",
+  "active": "da3824b6ab28dd0a",
   "lastOpenFiles": [
-    "1.project/취업.md",
     "1.project/README.md",
     "conflict-files-obsidian-git.md",
+    "1.project/취업.md",
     "README.md",
     "2.area/README.md",
     "memo/포폴 임시/JoinUs.md",
