@@ -11,11 +11,11 @@
             "id": "f0335a8e0bf8e61a",
             "type": "leaf",
             "state": {
-              "type": "markdown",
+              "type": "diff-view",
               "state": {
-                "file": "1.project/README.md",
-                "mode": "source",
-                "source": false
+                "file": ".obsidian/workspace.json",
+                "staged": false,
+                "hash": "0a93e739b2d489863b054880bf977b0dc5e3e353"
               }
             }
           }
@@ -85,7 +85,6 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "1.project/README.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -102,7 +101,6 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "1.project/README.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -124,13 +122,19 @@
             "type": "leaf",
             "state": {
               "type": "outline",
-              "state": {
-                "file": "1.project/README.md"
-              }
+              "state": {}
+            }
+          },
+          {
+            "id": "c9955db8de869f82",
+            "type": "leaf",
+            "state": {
+              "type": "git-history-view",
+              "state": {}
             }
           }
         ],
-        "currentTab": 3
+        "currentTab": 4
       }
     ],
     "direction": "horizontal",
@@ -150,14 +154,16 @@
   },
   "active": "f0335a8e0bf8e61a",
   "lastOpenFiles": [
+    "README.md",
+    "2.area/README.md",
+    "1.project/취업.md",
+    "1.project/README.md",
     "conflict-files-obsidian-git.md",
     "memo/포폴 임시/JoinUs.md",
     "memo/포폴 임시/세모반.md",
     "idea/타자 프로그램(블록체인 코인).md",
     "idea/볼링 플랫폼 사업.md",
     "idea/노트북 케이스 사업.md",
-    "1.project/취업.md",
-    "1.project/README.md",
     "memo/TIL/구글 검색 명령어.md",
     "memo/TIL/WSL npm 속도 문제.md",
     "memo/TIL/Webstorm Tailwind Autocomplete.md",
@@ -193,8 +199,6 @@
     "3.resource/solidity/youtube-solidity/lecture/artifacts/build-info/fa91eb555f1cf33f030ab35ebc589ef5.json",
     "3.resource/solidity/youtube-solidity/README.md",
     "3.resource/javascript/dreamcoding/README.md",
-    "3.resource/http/HTTP.md",
-    "3.resource/html-css/webstandard/README.md",
-    "3.resource/README.md"
+    "3.resource/http/HTTP.md"
   ]
 }
