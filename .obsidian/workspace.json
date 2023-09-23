@@ -18,21 +18,8 @@
                 "source": false
               }
             }
-          },
-          {
-            "id": "cb3801f5b9f292f5",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "conflict-files-obsidian-git.md",
-                "mode": "source",
-                "source": false
-              }
-            }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "vertical"
@@ -98,7 +85,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "conflict-files-obsidian-git.md",
+                "file": "1.project/README.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -115,7 +102,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "conflict-files-obsidian-git.md",
+                "file": "1.project/README.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -138,7 +125,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "conflict-files-obsidian-git.md"
+                "file": "1.project/README.md"
               }
             }
           }
@@ -161,8 +148,9 @@
       "obsidian-excalidraw-plugin:Create new drawing": false
     }
   },
-  "active": "cb3801f5b9f292f5",
+  "active": "f0335a8e0bf8e61a",
   "lastOpenFiles": [
+    "conflict-files-obsidian-git.md",
     "memo/포폴 임시/JoinUs.md",
     "memo/포폴 임시/세모반.md",
     "idea/타자 프로그램(블록체인 코인).md",
@@ -170,7 +158,6 @@
     "idea/노트북 케이스 사업.md",
     "1.project/취업.md",
     "1.project/README.md",
-    "conflict-files-obsidian-git.md",
     "memo/TIL/구글 검색 명령어.md",
     "memo/TIL/WSL npm 속도 문제.md",
     "memo/TIL/Webstorm Tailwind Autocomplete.md",
