@@ -11,8 +11,12 @@
             "id": "f0335a8e0bf8e61a",
             "type": "leaf",
             "state": {
-              "type": "empty",
-              "state": {}
+              "type": "markdown",
+              "state": {
+                "file": "1.project/README.md",
+                "mode": "source",
+                "source": false
+              }
             }
           }
         ]
@@ -81,6 +85,7 @@
             "state": {
               "type": "backlink",
               "state": {
+                "file": "1.project/README.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -97,6 +102,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
+                "file": "1.project/README.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -118,7 +124,9 @@
             "type": "leaf",
             "state": {
               "type": "outline",
-              "state": {}
+              "state": {
+                "file": "1.project/README.md"
+              }
             }
           }
         ],
@@ -142,6 +150,7 @@
   },
   "active": "f0335a8e0bf8e61a",
   "lastOpenFiles": [
+    "1.project/취업.md",
     "attached-file/ws.png",
     "attached-file/vite.png",
     "attached-file/Untitled (6).png",
@@ -152,7 +161,6 @@
     "attached-file/Untitled (1).png",
     "attached-file/semoban8.png",
     "attached-file/semoban7.png",
-    "attached-file/semoban6.png",
     "attached-file/1eHrxkzMuIMTaOREBlpt-SyouEoWaLA6R",
     "attached-file",
     "3.resource/solidity/youtube-solidity/lecture/artifacts/build-info/f913272b106e85455e02e6589589e715.json",
@@ -169,7 +177,6 @@
     "3.resource/html-css/webstandard/README.md",
     "3.resource/README.md",
     "2.area/README.md",
-    "1.project/취업.md",
     "1.project/README.md"
   ]
 }
