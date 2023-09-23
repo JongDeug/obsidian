@@ -1,0 +1,4 @@
+웹 뿐만 아니라 컴퓨터 환경에서도 javascript를 사용할 수 있음.(어떻게? javascript engine으로)
+
+자바스크립트 엔진이 존재. 크롬은 V8
+ECMAScript 문법의 규격사항, 표준사항
