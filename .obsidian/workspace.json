@@ -13,7 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "1.project/README.md",
+                "file": "3.resource/linux/우분투 부팅 시 스크립트 자동 실행.md",
                 "mode": "source",
                 "source": false
               }
@@ -85,7 +85,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "1.project/README.md",
+                "file": "3.resource/linux/우분투 부팅 시 스크립트 자동 실행.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -102,7 +102,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "1.project/README.md",
+                "file": "3.resource/linux/우분투 부팅 시 스크립트 자동 실행.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -125,7 +125,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "1.project/README.md"
+                "file": "3.resource/linux/우분투 부팅 시 스크립트 자동 실행.md"
               }
             }
           }
@@ -139,26 +139,30 @@
   },
   "left-ribbon": {
     "hiddenItems": {
+      "table-editor-obsidian:Advanced Tables Toolbar": false,
+      "obsidian-excalidraw-plugin:Create new drawing": false,
+      "remotely-save:Remotely Save": false,
       "switcher:퀵 스위처 열기": false,
       "graph:그래프 뷰 열기": false,
       "canvas:새 캔버스 만들기": false,
       "daily-notes:오늘의 데일리 노트 열기": false,
       "templates:템플릿 삽입": false,
-      "command-palette:명령어 팔레트 열기": false,
-      "table-editor-obsidian:Advanced Tables Toolbar": false,
-      "obsidian-excalidraw-plugin:Create new drawing": false
+      "command-palette:명령어 팔레트 열기": false
     }
   },
-  "active": "ea123443ed5ebc6b",
+  "active": "7bd575911b5e1a02",
   "lastOpenFiles": [
+    "attached-file/private",
+    "1.project/README.md",
+    "3.resource/linux/우분투 부팅 시 스크립트 자동 실행.md",
+    "1.project/취업.md",
+    "2023-09-24.md",
     "excalidraw/Drawing 2023-09-23 02.44.09.excalidraw.md",
     "idea/노트북 케이스 사업.md",
     "idea/볼링 플랫폼 사업.md",
     "idea/타자 프로그램(블록체인 코인).md",
     "memo/영어 공부법.md",
-    "1.project/README.md",
     "conflict-files-obsidian-git.md",
-    "1.project/취업.md",
     "attached-file/ws.png",
     "attached-file/vite.png",
     "attached-file/Untitled (6).png",
