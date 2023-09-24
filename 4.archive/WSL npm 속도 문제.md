@@ -1,8 +1,6 @@
-# WSl 2 npm 속도 문제
+# WSL 2 npm 속도 문제
 
 ---
-
-Category : wsl2
 
 ## 문제 직면
 
