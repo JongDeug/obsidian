@@ -1,4 +1,5 @@
 {
   "tabSize": 4,
-  "vimMode": true
+  "vimMode": true,
+  "attachmentFolderPath": "attached-file"
 }
