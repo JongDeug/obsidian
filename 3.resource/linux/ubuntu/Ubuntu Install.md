@@ -1,4 +1,4 @@
-# Ubuntu 설치
+# Ubuntu Install
 
 ✅ 먼저 부팅 가능한 USB 만들기
 [USB, 부팅](https://medium.com/code-states/무작정-우분투-설치하기-65dae2631ecc](https://medium.com/code-states/%EB%AC%B4%EC%9E%91%EC%A0%95-%EC%9A%B0%EB%B6%84%ED%88%AC-%EC%84%A4%EC%B9%98%ED%95%98%EA%B8%B0-65dae2631ecc)

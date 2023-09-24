@@ -1,9 +1,5 @@
 # git 사용법
 
----
-
-Category : git
-
 ## 문제 직면
 
 git과 github를 자주 사용하고 있었지만 git add, commit, push, pull 등 간단한 명령어만 알고 있는 상태였다. 각 명령어의 상세 동작원리를 몰랐고 궁금해서 강의를 듣게 되었다.
