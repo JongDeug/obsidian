@@ -4,5 +4,6 @@
   "obsidian-excalidraw-plugin",
   "obsidian-tasks-plugin",
   "obsidian-git",
-  "remotely-save"
+  "remotely-save",
+  "obsidian-kanban"
 ]
