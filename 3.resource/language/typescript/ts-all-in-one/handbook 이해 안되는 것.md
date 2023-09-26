@@ -1,5 +1,5 @@
-## 이해 되지 않은 코드 수정
-https://www.typescriptlang.org/docs/handbook/2/classes.html#index-signatures
+## [이해 되지 않은 코드 수정](https://www.typescriptlang.org/docs/handbook/2/classes.html#index-signatures)
+
 ```
 type check = (s: string) => boolean;
 
@@ -11,9 +11,9 @@ class MyClass {
     }
 }
 ```
-## is 키워드?
 
-https://www.typescriptlang.org/docs/handbook/2/classes.html#this-based-type-guards
+## [is 키워드?](https://www.typescriptlang.org/docs/handbook/2/classes.html#this-based-type-guards)
+
 ```
 function isString(test: any): test is string{
 	return typeof test === "string";

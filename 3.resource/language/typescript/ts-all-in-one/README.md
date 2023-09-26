@@ -15,16 +15,19 @@
 애초에 ts인 redux, 패키지 내부에서 d.ts를 제공하는 axios, @types 패키지가 별도로 존재하는 react, node, express, jquery로 구분됨. @types는 DefinitelyTyped라는 프로젝트로, 커뮤니티에서 라이브러리 타이핑을 제공하는 것.
 
 # 기본 지식
-- 메인 룰: typescript는 최종적으로 javascript로 변환된다. 순전한 typescript 코드를 돌릴 수 있는 것은 deno이나 대중화되지가 않았음. 브라우저, 노드는 모두 js 파일을 실행한다.
+- **메인 룰: typescript는 최종적으로 javascript로 변환된다.** 순전한 typescript 코드를 돌릴 수 있는 것은 deno이나 대중화되지가 않았음. 브라우저, 노드는 모두 js 파일을 실행한다.
 - typescript는 언어이자 컴파일러(tsc)이다. 컴파일러는 ts 코드를 js로 바꿔준다.
-- tsc는 tsconfig.json(tsc --init 시 생성)에 따라 ts 코드를 js(tsc 시 생성)로 바꿔준다. 인풋인 ts와 아웃풋인 js 모두에 영향을 끼치므로 tsconfig.json 설정을 반드시 봐야한다.
+- tsc는 tsconfig.json(tsc --init 시 생성)에 따라 ts 코드를 js(tsc 시 생성)로 바꿔준다. 인풋인 ts와 아웃풋인 js 모두에 영향을 끼치므로 **tsconfig.json 설정을 반드시 봐야한다.**
 - 단순히 타입 검사만 하고싶다면 tsc --noEmit 하면 된다.
-- 개인 의견: tsconfig.json에서 그냥 esModuleInterop: true, strict: true 두 개만 주로 켜놓는 편. strict: true가 핵심임.
+- 개인 의견: tsconfig.json에서 **그냥 esModuleInterop: true, strict: true 두 개만 주로 켜놓는 편**. strict: true가 핵심임.
 - ts 파일을 실행하는 게 아니라 결과물인 js를 실행해야 한다.
 - 에디터가 필수가 됨. VS Code나 웹스톰 반드시 필요. 메모장으로 코딩 불가능한 지경에 이름.
 
+# Tip
+-  타입 추론을 적극적으로 사용하자
+
 ## ts 문법
-- 기본적으로 변수, 속성, 매개변수, 리턴값에 타입이 붙었다고 생각하면 됨.
+- **기본적으로 변수, 속성, 매개변수, 리턴값에 타입이 붙었다고 생각하면 됨.**
 ```typescript
 const a: number = 5;
 function add(x: number, y: number): number { return x + y }
@@ -42,7 +45,7 @@ const b = '3';
 const c = a + b;
 function add(x: number, y: number) { return x + y }
 ```
-- : 뒷부분, as 뒷부분, <> 부분, interface, type, function 일부를 제외하면 자바스크립트와 동일. 제외하고 생각하는 연습을 초반에 해야 함.
+- **: 뒷부분, as 뒷부분, <> 부분, interface, type, function** 일부를 제외하면 자바스크립트와 동일. 제외하고 생각하는 연습을 초반에 해야 함.
 ```typescript
 const obj: { lat: number, lon: number } = { lat: 37.5, lon: 127.5 };
 const obj = { lat: 37.5, lon: 127.5 };
@@ -72,7 +75,7 @@ try {
   error;
 }
 ```
-- 최대한 ! 대신 if를 쓸 것
+- 느낌표 !(non-null assertion), 최대한 ! 대신 if를 쓸 것
 ```typescript
 const head = document.querySelector('#head')!;
 console.log(head);
@@ -82,6 +85,8 @@ if (head) {
   console.log(head);
 }
 ```
+!를 붙이면 "내가 head가 있음을 책임진다." 라는 뜻을 가지게 됨.
+
 - string과 String은 다름. 소문자로 하는 것 기억하기.
 ```typescript
 const a: string = 'hello';
@@ -105,6 +110,17 @@ tuple[2] = 'hello';
 tuple.push('hello');
 ```
 - enum, keyof, typeof
+```typescript
+const obj = {  
+    a : '123',  
+    b : 'hello',  
+    c : 'world'  
+} as const;  
+  
+type Key = typeof obj[keyof typeof obj];
+```
+as const 를 사용해서 type을 정교하게 만듦.
+=> Key는  "123" | "hello" | "world" 가 됨.
 ```typescript
 const enum EDirection {
   Up,
@@ -145,6 +161,38 @@ const a: A = { a: 'hello' };
 
 interface B { a: string }
 const b: B = { a: 'hello' };
+```
+- type 과 interface 차이 (주로 interface를 씀)
+```typescript
+interface Animal {  
+    breath: true  
+}  
+  
+interface Mammal extends Animal {  
+    breed: true  
+}  
+  
+interface Human extends Mammal {  
+    think: true  
+}  
+  
+const jongDeug: Human = { breath: true, breed: true, think: true}	
+```
+
+```typescript
+type Animal = {
+    breath: true
+}
+
+type Mammal = Animal & {
+    breed: true
+}
+
+type Human = Mammal & {
+    think: true
+}
+
+const jongDeug: Human = {breath: true, breed: true, think: true}
 ```
 - union, intersection
 ```typescript
@@ -198,6 +246,10 @@ const a: A = {
     talk() { return 3; }
 }
 ```
+
+1. 함수에 직접적으로 void를 사용했을 경우 -> return 값 사용 x
+2. 매개변수, 메서드는 void를 사용해도 return을 쓸 수 있게 만듦. 하지만 return을 예외처리하게 됨.
+
 - 타입만 선언하고 싶을 때 declare(구현은 다른 파일에 있어야 함)
 ```typescript
 declare const a: string;
@@ -206,11 +258,18 @@ declare class A {}
 
 // 추후 declare module, declare global, declare namespace도 배움
 ```
+다른 모듈에서 구현되어 있고 타입만 선언하고 싶을 때 사용함.
 
 - 타입간 대입 가능 표
 ![image](https://user-images.githubusercontent.com/10962668/179646513-3c3be896-3bbc-4784-848b-06bc47e8b129.png)
+초록색 v도 x로 보면 됨. 
 
-- 타입 가드
+- any 와 unknown 
+any는 타입 선언을 포기해버리는 거
+unknown는 현재 내가 타입을 잘 모를 때 사용함. 나중에 as로 직접 타입을 지정해 줘야 함 
+둘은 다른 거임.
+
+- 타입 가드(타입 거리 좁히기)
 ```typescript
 function numOrStr(a: number | string) {
   if (typeof a === 'string') {
@@ -228,6 +287,8 @@ function numOrNumArr(a: number | number[]) {
   }
 }
 
+
+
 type B = { type: 'b', bbb: string };
 type C = { type: 'c', ccc: string };
 type D = { type: 'd', ddd: string };
@@ -244,25 +305,72 @@ function typeCheck(a: A) {
 
 interface Cat { meow: number }
 interface Dog { bow: number }
+// custom type guard
 function catOrDog(a: Cat | Dog): a is Dog {
   if ((a as Cat).meow) { return false }
   return true;
 }
 const cat: Cat | Dog = { meow: 3 }
 if (catOrDog(cat)) {
-    console.log(cat.meow);
+    console.log(a.bow);
 }
 if ('meow' in cat) {
-    console.log(cat.meow);
+    console.log(a.meow);
 }
-
 const isRejected = (input: PromiseSettledResult<unknown>): input is PromiseRejectedResult => input.status === 'rejected';
 const isFulfilled = <T>(input: PromiseSettledResult<T>): input is PromiseFulfilledResult<T> => input.status === 'fulfilled';
 
 const promises = await Promise.allSettled([Promise.resolve('a'), Promise.resolve('b')]);
 const errors = promises.filter(isRejected);
 ```
-class인 경우 instanceof 연산자도 가능!
+
+```typescript
+class A {
+	aaa() {}
+}
+class B {
+	bbb() {}
+}
+function aOrB(param: A|B){
+	if(param instanceof A){
+		param.aaa();
+	}
+}
+// 인스턴스를 넣어야 함.
+aOrB(new A());
+aOrB(new B());
+
+---
+
+class Aclass {
+	//~~
+}
+const a: Aclass = new Aclass('123');
+const b: typeof Aclass = Aclass;
+```
+1. 타입 가드에서 class인 경우 instanceof 연산자도 가능!
+	1. class 자체 타입은 typeof class, 클래스 이름은 instance를 가리킴.
+
+- {} 와 Object
+```typescript
+const x: {} = "hello";  
+const y: Object = "hi";  
+const yy: object = { hello: "world"};  
+const z: unknown = "hi";
+
+// {}, Object = null, undefined 제외 모든 타입
+// Object !== object
+// unknown = {} | null | undefined
+if (z){  
+    z;  // {}
+} else {  
+    z;  // null | undefined
+}
+```
+
+- {}, Object :  null, undefined 제외 모든 타입
+- unknown : {} | null | undefined
+
 - readonly
 ```typescript
 interface A {
@@ -270,6 +378,21 @@ interface A {
   b: string;
 }
 ```
+
+- Index Signature 
+```typescript
+type A = { [key: string]: number };
+const a: A = {a:3, b:4, c:5};
+```
+어떤 키든 간에 다 숫자였으면 좋겠어
+
+- Mapped Types
+```typescript
+type B = 'Human' | 'Mammal' | 'Animal';
+type A = {[key in B]: number};
+const a: A = {Human: 123, Mammal: 5, Animal: 7};
+```
+
 - class에 private, protected 추가됨
 ```typescript
 class B implements A {
@@ -296,8 +419,16 @@ class Y extends X {
 const constructor: abstract new (...args: any) => any = ...
 ```
 - class vs interface
+런타임에서 있냐 없냐의 차이.
 
-런타임에서 있냐 없냐.
+- 추상 클래스와 인터페이스의 공통점과 차이점
+공통점 : 
+1. 메서드의 선언만 있고 구현 내용이 없다 (추상 메서드)
+2. new 키워드를 통해 객체를 생성할 수 없다.
+3. 상속받은 클래스가 반드시 선언된 추상 메서드를 구현하도록 함
+차이점 :
+1. abstract class는 extends(상속, 확장의 느낌)
+2. interface는 implements(상속, 구현의 느낌)
 
 - optional
 ```typescript
@@ -856,7 +987,7 @@ export function createDispatchHook<
 
 ## Node의 타이핑
 
-<reference path="..."은 해당 파일의 타입들을 끌고 오는 것. 요즘 할 필요 없음
+`<reference path="..."은 해당 파일의 타입들을 끌고 오는 것. 요즘 할 필요 없음
 d.ts 파일에 declare module 'fs:promises'로 import 'fs:promises' 할 때 어떤 타입이 될 지 작성할 수 있음.
 
 ```typescript
