@@ -464,6 +464,9 @@ function add<T extends string>(x: T, y: T): T { return x + y }
 add(1, 2);
 add('1', '2')
 
+const hi = <T>(x: T, y: T) => ({x,y});
+const hihi: <T>(x: T, y: T) => T = (x, y) => x;
+
 // <T extends {...}> // 특정 객체
 // <T extends any[]> // 모든 배열
 // <T extends (...args: any) => any> // 모든 함수

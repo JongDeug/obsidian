@@ -6,18 +6,18 @@ kanban-plugin: basic
 
 ## Todo
 
-- [ ] 이산수학 과제 @{2023-10-03} @@{23:00}
-- [ ] 공학수학 과제 @{2023-10-03} @@{23:00}
+- [ ] typescript 강의 공부
+- [ ] 누나가 보내준 obsidian 강의
+- [ ] 이슈 로그, 트러블 슈팅 가이드
 
 
 ## [[취업]]
 
-- [ ] 정보처리기사
-- [ ] SQLD
+- [ ] PCCP
 - [ ] 자기소개서
 - [ ] 코딩테스트(백준, 강의)
 - [ ] CS (네트워크, 운영체제, 자료구조, 데이터베이스, 디자인 패턴)
-- [ ] 포트폴리오 정리 및 관련 개발 공부
+- [ ] 포트폴리오 정리 및 관련 개발 공부<br>- typescript, typeorm<br>- nestJs(spring)<br>- test code, tdd, stress test<br>- svelte or react<br>- RDB, NORDB, TypeORM<br>- EC2(AWS 공부)<br>- 모니터링 / 로그 / 알람<br>- FP에 대한 이해
 - [ ] 영어 공부
 
 
@@ -32,7 +32,7 @@ kanban-plugin: basic
 
 ## 화수목
 
-- [ ] 포폴 관련 개발 공부<br>- typescript handbook<br>- nestJs
+- [ ] 포폴 관련 개발 공부<br>- Typescript, Svelte<br>- Nest.Js<br>- TDD 공부<br>- RDB, NORDB<br>- 모니터링 / 로그 / 알람<br>- AWS
 - [ ] 영어
 
 
@@ -44,7 +44,13 @@ kanban-plugin: basic
 - [ ] 1월<br>포폴 공부, 디패(cs복습), 백준, 영어, 자소서
 
 
+***
 
+## Archive
+
+- [ ] 정보처리기사
+- [ ] 이산수학 과제 @{2023-10-03} @@{23:00}
+- [ ] SQLD
 
 %% kanban:settings
 ```
