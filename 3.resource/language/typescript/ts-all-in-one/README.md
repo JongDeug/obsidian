@@ -26,7 +26,8 @@
 # Tip
 -  타입 추론을 적극적으로 사용하자
 
-## ts 문법
+## ts 기본 문법
+
 - **기본적으로 변수, 속성, 매개변수, 리턴값에 타입이 붙었다고 생각하면 됨.**
 ```typescript
 const a: number = 5;
@@ -34,10 +35,12 @@ function add(x: number, y: number): number { return x + y }
 const add: (x: number, y: number) => number = (x, y) => x + y;
 const obj: { lat: number, lon: number } = { lat: 37.5, lon: 127.5 };
 ```
+
 - 특수한 타입 {} (null과 undefined가 아닌 모든 타입)
 ```typescript
 const z: {} = 5;
 ```
+
 - ts가 추론해주는 타입이 있는데 이런 건 그냥 그대로 사용하면 됨. ts가 추론하지 못하는 경우에만 직접 타이핑할 것.
 ```typescript
 const a = 5;
@@ -45,6 +48,7 @@ const b = '3';
 const c = a + b;
 function add(x: number, y: number) { return x + y }
 ```
+
 - **: 뒷부분, as 뒷부분, <> 부분, interface, type, function** 일부를 제외하면 자바스크립트와 동일. 제외하고 생각하는 연습을 초반에 해야 함.
 ```typescript
 const obj: { lat: number, lon: number } = { lat: 37.5, lon: 127.5 };
@@ -59,14 +63,16 @@ function add(x, y) { return x + y }
 interface A {};
 type A = {};
 ```
+
 - 자바스크립트에 비해서 자유도가 확 줄어듦(ex: 변수에 문자열을 넣었다가 숫자로 바꾸는 등의 행동 어려워짐)
 ```typescript
 let x = 5;
 x = 'hello';
 ```
+
 - any를 최대한 쓰지 않는 것을 목표로 할 것.
 - never, unknown, any 타입 주의하기. any는 최대한 피하고 쓰더라도 나중에 꼭 제대로 타이핑하기.
-[never 좋은 설명 글](https://ui.toast.com/weekly-pick/ko_20220323)
+- [never 좋은 설명 글](https://ui.toast.com/weekly-pick/ko_20220323)
 ```typescript
 try {
   const array = []; // noImplicitAny가 false일 때
@@ -75,7 +81,9 @@ try {
   error;
 }
 ```
+
 - 느낌표 !(non-null assertion), 최대한 ! 대신 if를 쓸 것
+- !를 붙이면 "내가 head가 있음을 책임진다." 라는 뜻을 가지게 됨.
 ```typescript
 const head = document.querySelector('#head')!;
 console.log(head);
@@ -85,13 +93,13 @@ if (head) {
   console.log(head);
 }
 ```
-!를 붙이면 "내가 head가 있음을 책임진다." 라는 뜻을 가지게 됨.
 
 - string과 String은 다름. 소문자로 하는 것 기억하기.
 ```typescript
 const a: string = 'hello';
 const b: String = 'hell';
 ```
+
 - 템플릿 리터럴 타입이 존재(유니언 등 사용 가능)
 ```typescript
 type World = "world" | "hell";
@@ -99,6 +107,7 @@ type World = "world" | "hell";
 // type Greeting = "hello world"
 type Greeting = `hello ${World}`;
 ```
+
 - 배열, 튜플 문법
 ```typescript
 let arr: string[] = [];
@@ -109,6 +118,7 @@ const tuple: [string, number] = ['1', 1];
 tuple[2] = 'hello';
 tuple.push('hello');
 ```
+
 - enum, keyof, typeof
 ```typescript
 const obj = {  
@@ -119,6 +129,7 @@ const obj = {
   
 type Key = typeof obj[keyof typeof obj];
 ```
+
 as const 를 사용해서 type을 정교하게 만듦.
 => Key는  "123" | "hello" | "world" 가 됨.
 ```typescript
@@ -154,6 +165,7 @@ function run(dir: Direction) {}
 walk(EDirection.Left);
 run(ODirection.Right);
 ```
+
 - 객체 타이핑: type과 interface 구분하기
 ```typescript
 type A = { a: string };
@@ -162,6 +174,7 @@ const a: A = { a: 'hello' };
 interface B { a: string }
 const b: B = { a: 'hello' };
 ```
+
 - type 과 interface 차이 (주로 interface를 씀)
 ```typescript
 interface Animal {  
@@ -194,6 +207,7 @@ type Human = Mammal & {
 
 const jongDeug: Human = {breath: true, breed: true, think: true}
 ```
+
 - union, intersection
 ```typescript
 function add(x: string | number, y: string | number): string | number { return x + y }
@@ -212,6 +226,7 @@ const aa: A | B = { a: 'hello', b: 'world' };
 const bb: A & B = { a: 'hello', b: 'world' };
 
 ```
+
 - interface끼리는 서로 합쳐짐.
 ```typescript
 interface A { a: string }
@@ -232,7 +247,9 @@ const b = { hello: 'world', why: 'error' };
 const c: A = b;
 ```
 
-- void 타입은 return값을 사용하지 안 겠다는 뜻(메서드나 매개변수에서는 리턴값 사용 가능, but 조심해야 함)
+- void 타입은 return값을 사용하지 않겠다는 뜻(메서드나 매개변수에서는 리턴값 사용 가능, but 조심해야 함)
+1. 함수에 직접적으로 void를 사용했을 경우 -> return 값 사용 x
+2. 매개변수, 메서드는 void를 사용해도 return을 쓸 수 있게 만듦. 하지만 return을 예외처리하게 됨.
 ```typescript
 declare function forEach<T>(arr: T[], callback: (el: T) => undefined): void;
 // declare function forEach<T>(arr: T[], callback: (el: T) => void): void;
@@ -247,10 +264,8 @@ const a: A = {
 }
 ```
 
-1. 함수에 직접적으로 void를 사용했을 경우 -> return 값 사용 x
-2. 매개변수, 메서드는 void를 사용해도 return을 쓸 수 있게 만듦. 하지만 return을 예외처리하게 됨.
-
 - 타입만 선언하고 싶을 때 declare(구현은 다른 파일에 있어야 함)
+- 다른 모듈에서 구현되어 있고 타입만 선언하고 싶을 때 사용함.
 ```typescript
 declare const a: string;
 declare function a(x: number): number;
@@ -258,7 +273,6 @@ declare class A {}
 
 // 추후 declare module, declare global, declare namespace도 배움
 ```
-다른 모듈에서 구현되어 있고 타입만 선언하고 싶을 때 사용함.
 
 - 타입간 대입 가능 표
 ![image](https://user-images.githubusercontent.com/10962668/179646513-3c3be896-3bbc-4784-848b-06bc47e8b129.png)
@@ -332,6 +346,7 @@ class B {
 	bbb() {}
 }
 function aOrB(param: A|B){
+    // 1. 타입 가드에서 class인 경우 instanceof 연산자도 가능!
 	if(param instanceof A){
 		param.aaa();
 	}
@@ -340,18 +355,18 @@ function aOrB(param: A|B){
 aOrB(new A());
 aOrB(new B());
 
----
 
+// 2. class 자체 타입은 typeof class, 클래스 이름은 instance를 가리킴.
 class Aclass {
 	//~~
 }
 const a: Aclass = new Aclass('123');
 const b: typeof Aclass = Aclass;
 ```
-1. 타입 가드에서 class인 경우 instanceof 연산자도 가능!
-	1. class 자체 타입은 typeof class, 클래스 이름은 instance를 가리킴.
 
 - {} 와 Object
+- {}, Object :  null, undefined 제외 모든 타입
+- unknown : {} | null | undefined
 ```typescript
 const x: {} = "hello";  
 const y: Object = "hi";  
@@ -368,9 +383,6 @@ if (z){
 }
 ```
 
-- {}, Object :  null, undefined 제외 모든 타입
-- unknown : {} | null | undefined
-
 - readonly
 ```typescript
 interface A {
@@ -381,10 +393,10 @@ interface A {
 
 - Index Signature 
 ```typescript
+// 어떤 키든 간에 다 숫자였으면 좋겠어
 type A = { [key: string]: number };
 const a: A = {a:3, b:4, c:5};
 ```
-어떤 키든 간에 다 숫자였으면 좋겠어
 
 - Mapped Types
 ```typescript
@@ -403,6 +415,7 @@ class C extends B {}
 new C().a;
 new C().b;
 ```
+
 - abstract class, abstract method
 ```typescript
 abstract class X {
@@ -414,10 +427,12 @@ class Y extends X {
   }
 }
 ```
+
 - abstract class, abstract 생성자
 ```typescript
 const constructor: abstract new (...args: any) => any = ...
 ```
+
 - class vs interface
 런타임에서 있냐 없냐의 차이.
 
@@ -450,6 +465,7 @@ add<string>('1', '2');
 add('1', '2');
 add(1, '2');
 ```
+
 - 제네릭 선언 위치 기억하기
 ```typescript
 function a<T>() {}
@@ -458,6 +474,7 @@ interface C<T> {}
 type D<T> = {};
 const e = <T>() => {};
 ```
+
 - 제네릭 기본값, extends
 ```typescript
 function add<T extends string>(x: T, y: T): T { return x + y }
@@ -473,6 +490,7 @@ const hihi: <T>(x: T, y: T) => T = (x, y) => x;
 // <T extends abstract new (...args: any) => any> // 생성자 타입
 // <T extends keyof any> // string | number | symbol
 ```
+
 - 함수에서 공변성과 반공변성 주의!
 ```typescript
 function a(x: string): number {
@@ -499,6 +517,7 @@ function a(x: string): number {
 type B = (x: string | number) => number;
 let b: B = a;
 ```
+
 - 함수 오버로딩
 ```typescript
 function add(x: number, y: number): number
