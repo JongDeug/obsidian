@@ -491,26 +491,46 @@ const hihi: <T>(x: T, y: T) => T = (x, y) => x;
 // <T extends keyof any> // string | number | symbol
 ```
 
-- 함수에서 공변성과 반공변성 주의!
+- Type predicate, is 키워드
 ```typescript
+interface Array<T>{  
+    filter<S extends T>(predicate: (value: T, index: number, array: T[]) => value is S, thisArg?: any): S[];  
+}  
+
+// 반환값 string[] | number[] 타입
+const stringNumberFiltered= ['1', 2, '3', 4, '5'].filter((value) => typeof value === 'string');  
+
+// value is string 사용해서 반환값 string[] 타입
+const stringFiltered= ['1', 2, '3', 4, '5'].filter((value): value is string => typeof value === 'string');
+```
+
+- 함수에서 공변성과 반공변성 주의!
+리턴값은 더 넓은 타입에 더 좁은 타입 대입 가능
+매개변수는 상관없음.  
+```typescript
+
+// ---------------------------------------- 가능
 function a(x: string): number {
   return 0;
 }
 type B = (x: string) => number | string;
 let b: B = a;
 
+// ---------------------------------------- 불가능
 function a(x: string): number | string {
   return 0;
 }
 type B = (x: string) => number;
 let b: B = a;
 
+// ---------------------------------------- 가능
 function a(x: string | number): number {
   return 0;
 }
 type B = (x: string) => number;
 let b: B = a;
 
+// ---------------------------------------- 가능
 function a(x: string): number {
   return 0;
 }
@@ -532,6 +552,7 @@ interface Add {
 }
 const add: Add = (x: any, y: any) => x + y;
 ```
+
 - infer는 타입 내에서 추론된 값으로 다시 새로운 타입을 만드는 것(밑에 utility types 참고).
 - 타입스크립트는 건망증이 심하다
 ```typescript
