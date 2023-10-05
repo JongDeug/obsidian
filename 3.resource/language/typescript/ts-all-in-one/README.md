@@ -26,7 +26,7 @@
 # Tip
 -  타입 추론을 적극적으로 사용하자
 
-## ts 기본 문법
+# ts 기본 문법
 
 - **기본적으로 변수, 속성, 매개변수, 리턴값에 타입이 붙었다고 생각하면 됨.**
 ```typescript
@@ -128,6 +128,9 @@ const obj = {
 } as const;  
   
 type Key = typeof obj[keyof typeof obj];
+
+type Point = { x: number; y: number };
+type P = keyof Point;
 ```
 
 as const 를 사용해서 type을 정교하게 만듦.
@@ -486,8 +489,8 @@ const hihi: <T>(x: T, y: T) => T = (x, y) => x;
 
 // <T extends {...}> // 특정 객체
 // <T extends any[]> // 모든 배열
-// <T extends (...args: any) => any> // 모든 함수
-// <T extends abstract new (...args: any) => any> // 생성자 타입
+// <T extends (...args: any) => any> // 모든 함수, T는 함수만 됨. 함수 제한 
+// <T extends abstract new (...args: any) => any> // 생성자 타입, 클래스 말하는건감?
 // <T extends keyof any> // string | number | symbol
 ```
 
@@ -553,6 +556,8 @@ interface Add {
 const add: Add = (x: any, y: any) => x + y;
 ```
 
+- infer 타입 추론, extends에서만 사용가능함.
+- infer는 타입스크립트가 알아서 추론해주는 것을 말함.
 - infer는 타입 내에서 추론된 값으로 다시 새로운 타입을 만드는 것(밑에 utility types 참고).
 - 타입스크립트는 건망증이 심하다
 ```typescript
@@ -571,68 +576,170 @@ function (this: Window, a: number, b: number) {
 
 ## utility types로 알아보기
 [링크](https://www.typescriptlang.org/docs/handbook/utility-types.html)
-- Partial
+
+- Partial : 모두 옵셔널로 만들어줌.
 ```typescript
+interface Profile {  
+    name: string,  
+    age: number,  
+    married: boolean,  
+}
+
+type newProfile: Partial<Profile> = {
+    name: 'jong',  
+    age: 26,  
+}
+
 type Partial<T> = {
     [P in keyof T]?: T[P];
 };
 ```
-- Required
+
+- Required : 옵셔널을 필수로 만들어줌.
 ```typescript
+interface Profile {  
+    name?: string,  
+    age?: number,  
+    married?: boolean,  
+}
+
+
+const newProfile: Required<Profile> = {  
+    name: 'jong',  
+    age: 26,  
+    married: false,  
+}
+
 type Required<T> = {
     [P in keyof T]-?: T[P];
 };
 ```
-- ReadOnly
+
+- ReadOnly : 모두 readonly 속성으로 만들어줌.
 ```typescript
 type Readonly<T> = {
     readonly [P in keyof T]: T[P];
 };
 ```
+
 - Pick
 ```typescript
+const newProfile : Pick<Profile, 'name' | 'age'> = {  
+    name: 'jong',  
+    age: 26  
+}
+
+// K extends keyof T : Pick할 때 T에 없는 값을 쓰면 걸려줘야하기 때문에 사용.
+// keyof T = 'name' | 'age' | 'married'
 type Pick<T, K extends keyof T> = {
     [P in K]: T[P];
 };
 ```
+
 - Record
 ```typescript
+interface Obj {  
+    [key: string]: number;  
+}
+// 위와 아래가 같은 것
+type a = Record<string, number>;
+
 type Record<K extends keyof any, T> = {
     [P in K]: T;
 };
 ```
-- Exclude
+
+- Exclude : 몰아내다.
 ```typescript
+type Animal = 'Cat' | 'Dog' | 'Human';  
+type Mammal = Exclude<Animal, 'Human'>  
+
+
 type Exclude<T, U> = T extends U ? never : T;
 ```
-- Extract
+
+- Extract : 추출하다.
 ```typescript
+type Animal = 'Cat' | 'Dog' | 'Human';  
+type Human = Extract<Animal, 'Cat' | 'Dog'>
+
 type Extract<T, U> = T extends U ? T : never;
 ```
-- Omit
+
+- Omit : 생략하다.
+- K extends keyof any : S는 string | number | symbol 만 오게끔 만들어줌.
 ```typescript
+const newProfile : Omit<Profile, 'married'> = {  
+    name: 'jong',  
+    age: 26  
+}
+
+// K extends keyof any : S는 string | number | symbol 만 오게끔 만들어줌.
 type Omit<T, K extends keyof any> = Pick<T, Exclude<keyof T, K>>;
 ```
+
 - NonNullable
+- Null과 Undefined를 빼고 가져오고 싶을 때 사용.
 ```typescript
+type A = string | null | undefined | boolean | symbol;  
+type B = NonNullable<A>;
+
 type NonNullable<T> = T extends null | undefined ? never : T;
 ```
-- Parameters
+
+- Parameters: 함수의 파라미터들 가져오기
+- infer는 extends에서만 사용가능하다.
 ```typescript
+function zip(x: number, y: string, z: boolean): { x: number, y: string, z: boolean } {  
+    return {x, y, z};  
+}  
+  
+type Params = Parameters<typeof zip>
+
+// 추론 조건 ? 추론 성공 시 값 : 추론 실패 시 값
 type Parameters<T extends (...args: any) => any> = T extends (...args: infer P) => any ? P : never;
 ```
+
 - ConstructorParameters
 ```typescript
+class A {  
+    a: string;  
+    b: number;  
+    c: boolean;  
+    constructor(a:string, b:number, c:boolean) {  
+        this.a = a;  
+        this.b = b;  
+        this.c = c;  
+    }  
+}  
+type C = ConstructorParameters<typeof A>;  
+							
 type ConstructorParameters<T extends abstract new (...args: any) => any> = T extends abstract new (...args: infer P) => any ? P : never;
 ```
-- ReturnType
+
+- ReturnType : Parameters 구현에서 infer 위치만 바꿔주면 구현 가능함.
 ```typescript
 type ReturnType<T extends (...args: any) => any> = T extends (...args: any) => infer R ? R : any;
 ```
+
 - InstanceType
 ```typescript
+class A {  
+    a: string;  
+    b: number;  
+    c: boolean;  
+    constructor(a:string, b:number, c:boolean) {  
+        this.a = a;  
+        this.b = b;  
+        this.c = c;  
+    }  
+}  
+type I = InstanceType<typeof A>;
+
+
 type InstanceType<T extends abstract new (...args: any) => any> = T extends abstract new (...args: any) => infer R ? R : any;
 ```
+
 - 기타
 ```typescript
 /**

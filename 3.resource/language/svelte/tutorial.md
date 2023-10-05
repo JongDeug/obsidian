@@ -267,3 +267,16 @@ name을 바꾸면 input도 바꿔진다.
 ```html
 <input type="checkbox" bind:checked={yes}>
 ```
+
+### Select bindings
+```html
+<select 
+	bind:value={selected} 
+	on:change={() => answer = ''} 
+>
+```
+
+### Group inputs
+input 태그에서 같은 name으로 그룹을 형성하면 
+type이 radio인 경우 bind:group에 해당 value가 저장되고,
+type이 checkbox인 경우 bind:group에 체크한 value가 배열에 저장된다.
