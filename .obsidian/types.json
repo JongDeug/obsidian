@@ -1,0 +1,11 @@
+{
+  "types": {
+    "aliases": "aliases",
+    "cssclasses": "multitext",
+    "tags": "tags",
+    "excalidraw-plugin": "text",
+    "": "date",
+    "dd": "date",
+    "date": "date"
+  }
+}

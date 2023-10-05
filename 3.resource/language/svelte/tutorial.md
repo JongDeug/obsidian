@@ -208,3 +208,62 @@ or
 ### DOM events
 `on:` pointermove, click ... etc
 
+### Event modifiers
+```html
+<button on:click|once|capture={() => alert('clicked')}> 
+	Click me 
+</button>
+```
+chain 형식으로도 가능.
+[7 Event modifiers](https://dev.to/tanhauhau/7-event-modifiers-in-svelte-you-must-know-27oc)
+
+### Components events
+Components can also dispatch* 보내다, 발송하다 events. 
+To do so!
+`Inner.svelte`
+```html
+<script>
+	import { createEventDispatcher } from 'svelte'; 
+	const dispatch = createEventDispatcher();
+	function sayHello() { dispatch('message', { text: 'Hello!' }); }
+</script>
+```
+`App.svelte`
+```html
+<script>
+	import Inner from './Inner.svelte';
+
+	function handleMessage(event) {
+		alert(event.detail.text);
+	}
+</script>
+<Inner on:message={handleMessage} />
+```
+
+### Event forwarding
+![[Drawing 2023-09-26 19.06.38.excalidraw.png]]
+Inner에서 App으로 event를 보내주려면 forwarding 필요.
+Outer에서 Inner와 같이 똑같이 작성해줘야 하지만,
+Svelte는 `<Inner on:message/>`와 같이 shorthand를 제공해줌.
+
+### DOM Event forwarding
+Event forwarding works for DOM events too.
+
+## *Binding*
+
+### Text Inputs
+We can use the `bind:value`
+This means that not only will changes to the value of name / (that?) update the input value, but changes to the input value will update name.
+
+input을 바꾸면 name도 바꿔지고,
+name을 바꾸면 input도 바꿔진다.
+
+### Numeric inputs
+```html
+<input type="number" bind:value={a} min="0" max="10" />
+```
+
+### Checkbox inputs
+```html
+<input type="checkbox" bind:checked={yes}>
+```

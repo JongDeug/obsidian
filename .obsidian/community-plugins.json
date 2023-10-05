@@ -5,5 +5,8 @@
   "obsidian-tasks-plugin",
   "obsidian-git",
   "remotely-save",
-  "obsidian-kanban"
+  "obsidian-kanban",
+  "calendar",
+  "dataview",
+  "periodic-notes"
 ]
