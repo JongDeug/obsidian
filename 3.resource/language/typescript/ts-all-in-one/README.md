@@ -120,6 +120,8 @@ tuple.push('hello');
 ```
 
 - enum, keyof, typeof
+as const 를 사용해서 type을 정교하게 만듦.
+=> Key는  "123" | "hello" | "world" 가 됨.
 ```typescript
 const obj = {  
     a : '123',  
@@ -133,8 +135,6 @@ type Point = { x: number; y: number };
 type P = keyof Point;
 ```
 
-as const 를 사용해서 type을 정교하게 만듦.
-=> Key는  "123" | "hello" | "world" 가 됨.
 ```typescript
 const enum EDirection {
   Up,
@@ -740,6 +740,68 @@ type I = InstanceType<typeof A>;
 type InstanceType<T extends abstract new (...args: any) => any> = T extends abstract new (...args: any) => infer R ? R : any;
 ```
 
+- Awaited : Promise 관련
+```typescript
+const p1 = Promise.resolve(1)  
+    .then((a)=> a + 1)  
+    .then((a) => a.toString());  
+  
+const p2 = Promise.resolve(2);  
+const p3 = new Promise((res, rej) => {  
+    setTimeout(res, 1000);  
+});  
+  
+Promise.all([p1,p2,p3]).then((result) => {  
+    console.log(result);  
+});
+```
+
+- bind : 함수형 프로그래밍에서 많이 사용함.
+- ThisParameterType : this만 추출
+- OmitThisParameter : this만 배제
+```typescript
+type ThisFunc = {  
+    name: string,  
+}  
+function a(this: ThisFunc, param: string){  
+    console.log(this.name);  
+}  
+  
+const hak = {name: 'dong'};  
+const jong = {name: 'hwan'};  
+  
+// thisArg: hak  
+const bindHak = a.bind(hak, 'a');  
+// thisArg: jong  
+const bindJong = a.bind(jong, 'a');  
+bindHak(); // dong  
+bindJong(); // hwan  
+  
+// This만 추출  
+const t: ThisParameterType<typeof a> = a;  
+// This만 배제  
+const noThis: OmitThisParameter<typeof a> = a;
+```
+
+- Flat : 배열 차원 줄이기
+```typescript
+const a = [1, 2, 3, [1, 2], [[1], [2]]].flat(2);
+
+
+type FlatArray<Arr, Depth extends number> = {  
+    "done": Arr,  
+						// ReadonlyArray<T> 여기서 T는 배열 요소 타입
+						// first:  number[] | number[][] | numbewr[][][]
+    "recur": Arr extends ReadonlyArray<infer InnerArr>  
+		// infer 해주면서 한 차원 줄어듦. 완전복잡한타입분석하기(flat)강의 9:20 초
+        ? FlatArray<InnerArr, [-1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20][Depth]>  
+        : Arr  
+}[Depth extends -1 ? "done" : "recur"];
+
+// FlatArray<InnerArr, [-1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20][Depth] : 설명
+const b = [-1,0,1,2,3][1] //배열[1] 이므로 0이 출력
+```
+
 - 기타
 ```typescript
 /**
@@ -777,6 +839,34 @@ function applyStringMapping(symbol: Symbol, str: string) {
  */
 interface ThisType<T> { }
 ```
+
+## Distributive Conditional Types
+
+conditional type 을 제네릭 타입에 적용하면 분배 법칙이 성립되는데  
+이걸 피하려면 
+	To avoid that behavior, you can surround each side of the `extends` keyword with square brackets.
+ `[ ]`를 붙여라.
+ 
+```typescript
+type ToArrayNonDist<Type> = [Type] extends [any] ? Type[] : never;
+
+type StrArrOrNumArr = ToArrayNonDist<string | number>;
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # ts 라이브러리 분석
 - package.json의 types 속성에 적힌 파일이 메인 타이핑 파일임.
