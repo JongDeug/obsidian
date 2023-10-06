@@ -7,6 +7,7 @@
 ✅ [한글 설정](https://osg.kr/archives/913)   
 - fcitx5 선택
 - 설정이 어느 순간 초기화 될 수 있음 =>  오른쪽 상단 클릭해서 Set up => Hangul Toggle Key에 있는 거 다 지우고 Alt_R만 설정.
+
 ✅ [zsh 와 oh my zsh 설치](https://guiyomi.tistory.com/114)
 - git 부터 설치
 
@@ -16,6 +17,9 @@
 - jetbrains toolbox 위치 : /opt/jetbrains/jetbrains-toolbox
 
 ✅ [Nodejs, npm 설치](https://jjeongil.tistory.com/2106)
+
+✅ Menu Bar 설정법
+- Settings -> Appearance -> 하단 Dock 설정
 
 ✅ [테마부터 필수 프로그램 가이드](https://ingu627.github.io/tips/ubuntu2204/)
 
