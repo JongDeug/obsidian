@@ -478,7 +478,7 @@ type D<T> = {};
 const e = <T>() => {};
 ```
 
-- 제네릭 기본값, extends
+- 제네릭 기본값, extends (제약 조건)
 ```typescript
 function add<T extends string>(x: T, y: T): T { return x + y }
 add(1, 2);
@@ -492,6 +492,28 @@ const hihi: <T>(x: T, y: T) => T = (x, y) => x;
 // <T extends (...args: any) => any> // 모든 함수, T는 함수만 됨. 함수 제한 
 // <T extends abstract new (...args: any) => any> // 생성자 타입, 클래스 말하는건감?
 // <T extends keyof any> // string | number | symbol
+
+```
+
+```typescript
+function hi<T extends S> 의 의미 (부분 집합)
+```
+![[Pasted image 20231007184432.png]]
+
+- 제네릭 화살표 함수
+```typescript
+const a: <T>(x: T) => T = (x) => {
+   return x;
+}
+
+const b = <T extends {}>(): T => {
+    return ;
+}
+
+type test<T> = () => T;
+const c: test<string> = () => {
+    return 'hi';
+}
 ```
 
 - Type predicate, is 키워드
@@ -508,8 +530,8 @@ const stringFiltered= ['1', 2, '3', 4, '5'].filter((value): value is string => t
 ```
 
 - 함수에서 공변성과 반공변성 주의!
-리턴값은 더 넓은 타입에 더 좁은 타입 대입 가능
-매개변수는 상관없음.  
+리턴값은 더 넓은 타입에 더 좁은 타입 대입 가능, 반대는 불가능
+매개변수는 상관없음.  (일단 좁은거에 넓은거 대입 가능이라고 생각하면됨, 반대 가능)
 ```typescript
 
 // ---------------------------------------- 가능
@@ -840,6 +862,7 @@ function applyStringMapping(symbol: Symbol, str: string) {
 interface ThisType<T> { }
 ```
 
+## 마무리 강의
 ## Distributive Conditional Types
 
 conditional type 을 제네릭 타입에 적용하면 분배 법칙이 성립되는데  
@@ -853,16 +876,81 @@ type ToArrayNonDist<Type> = [Type] extends [any] ? Type[] : never;
 type StrArrOrNumArr = ToArrayNonDist<string | number>;
 ```
 
+### never와 관련해서 헷갈리는 것
+```typescript
+let onlyBoolean = <T extends boolean>(arg: T= false): T => {
+    return arg;
+};
+
+// (arg: T = false)에서 오류 발생
+// why?
+
+type isNeverExtendsBoolean = never extends boolean ? 'yes' : 'no'; // yes
+
+onlyBoolean<never>(); // never인데 기본값이 false는 허용되지 않음.
+```
+
+### Union & Intersection
+```typescript
+type Union<T> = T extends { a: infer U, b: infer U } ? U : never;
+type Result1 = Union<{ a: 1 | 2, b: 2 | 3 }>;
+
+// 반공변성 2 | 3 ⊂ 1 | 2    =>  결과는 2
+type Intersection<T> = T extends {
+    a: (pa: infer U) => void,
+    b: (pb: infer U) => void
+} ? U : never;
+type Result2 = Intersection<{ a(pa: 1 | 2): void, b(pb: 2 | 3): void }>;
+```
+매개변수에 infer 을 넣으면 교집합 기능이 실행됨.
+why? 함수의 공변성 반공변성 때문
+매개변수는 좁은 타입에  더 넓은 타입을 넣는게 가능
+
+### Ambient declaration(엠비언트 선언), declare
+외부에 자바스크립트 파일이 있고 그거에 대한 dts 파일을 따로 만들고자 할 때 사용함.
+엠비언트 선언도 선언 병합이 된다.
+```typescript
+declare namespace NS {
+	const v: string;
+}
+declare enum Enum {
+	ADMIN = 1
+}
+declare function func(param: number): string;
+declare const variable: number;
+declare class C {
+	constructor(p1: string, p2: string);
+}
+
+new C(func(variable), NS.v);
+```
 
 
+![[Pasted image 20231007210507.png]]
+
+```typescript
+declare class A {
+	constructor(name: string);
+} 
+// 생성자 함수
+function A(name: string){
+	return new A(name);
+}
+// 자바스크립트에서는 가능한데 타입스크립트에서 둘다 선언은 어렵기 때문에 declare를 사용하면 편하게 할 수 있음.
+new A('jong');
+A('jong');
+```
 
 
+### 값과 타입
 
+![[Pasted image 20231007210445.png]]
 
+컴파일 했을 때 javascript에 남아있는 것들은 값 O
+typescript에만 있는 것들은 타입 O
 
-
-
-
+### Decorator 데코레이터
+좀 어려운 부분이 있어서 일단 skip.
 
 
 
