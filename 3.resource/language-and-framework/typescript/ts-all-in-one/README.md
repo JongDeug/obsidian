@@ -1,8 +1,4 @@
-# ts-all-in-one
-- [typescript 공식문서](https://www.typescriptlang.org/)
-- [typescript 플레이그라운드](https://www.typescriptlang.org/play)
-- [typescript 핸드북 필독](https://www.typescriptlang.org/docs/handbook/intro.html)
-- [typescript 버전 수정 내역](https://www.typescriptlang.org/docs/handbook/release-notes/overview.html)
+
 
 ## 실습할 자료 링크(소스 코드 버전에 따라 변동 가능)
 - [axios](https://github.com/axios/axios/blob/v1.x/index.d.ts)
@@ -14,27 +10,9 @@
 
 애초에 ts인 redux, 패키지 내부에서 d.ts를 제공하는 axios, @types 패키지가 별도로 존재하는 react, node, express, jquery로 구분됨. @types는 DefinitelyTyped라는 프로젝트로, 커뮤니티에서 라이브러리 타이핑을 제공하는 것.
 
-# 기본 지식
-- **메인 룰: typescript는 최종적으로 javascript로 변환된다.** 순전한 typescript 코드를 돌릴 수 있는 것은 deno이나 대중화되지가 않았음. 브라우저, 노드는 모두 js 파일을 실행한다.
-- typescript는 언어이자 컴파일러(tsc)이다. 컴파일러는 ts 코드를 js로 바꿔준다.
-- tsc는 tsconfig.json(tsc --init 시 생성)에 따라 ts 코드를 js(tsc 시 생성)로 바꿔준다. 인풋인 ts와 아웃풋인 js 모두에 영향을 끼치므로 **tsconfig.json 설정을 반드시 봐야한다.**
-- 단순히 타입 검사만 하고싶다면 tsc --noEmit 하면 된다.
-- 개인 의견: tsconfig.json에서 **그냥 esModuleInterop: true, strict: true 두 개만 주로 켜놓는 편**. strict: true가 핵심임.
-- ts 파일을 실행하는 게 아니라 결과물인 js를 실행해야 한다.
-- 에디터가 필수가 됨. VS Code나 웹스톰 반드시 필요. 메모장으로 코딩 불가능한 지경에 이름.
-
-# Tip
--  타입 추론을 적극적으로 사용하자
 
 # ts 기본 문법
 
-- **기본적으로 변수, 속성, 매개변수, 리턴값에 타입이 붙었다고 생각하면 됨.**
-```typescript
-const a: number = 5;
-function add(x: number, y: number): number { return x + y }
-const add: (x: number, y: number) => number = (x, y) => x + y;
-const obj: { lat: number, lon: number } = { lat: 37.5, lon: 127.5 };
-```
 
 - 특수한 타입 {} (null과 undefined가 아닌 모든 타입)
 ```typescript
@@ -178,38 +156,7 @@ interface B { a: string }
 const b: B = { a: 'hello' };
 ```
 
-- type 과 interface 차이 (주로 interface를 씀)
-```typescript
-interface Animal {  
-    breath: true  
-}  
-  
-interface Mammal extends Animal {  
-    breed: true  
-}  
-  
-interface Human extends Mammal {  
-    think: true  
-}  
-  
-const jongDeug: Human = { breath: true, breed: true, think: true}	
-```
 
-```typescript
-type Animal = {
-    breath: true
-}
-
-type Mammal = Animal & {
-    breed: true
-}
-
-type Human = Mammal & {
-    think: true
-}
-
-const jongDeug: Human = {breath: true, breed: true, think: true}
-```
 
 - union, intersection
 ```typescript
@@ -228,17 +175,6 @@ type B = {
 const aa: A | B = { a: 'hello', b: 'world' };
 const bb: A & B = { a: 'hello', b: 'world' };
 
-```
-
-- interface끼리는 서로 합쳐짐.
-```typescript
-interface A { a: string }
-interface A { b: string }
-const obj1: A = { a: 'hello', b: 'world' }
-
-type B = { a: string }
-type B = { b: string }
-const obj2: B = { a: 'hello', b: 'world' }
 ```
 
 - 객체 리터럴은 잉여 속성 검사가 있음.
@@ -478,7 +414,7 @@ type D<T> = {};
 const e = <T>() => {};
 ```
 
-- 제네릭 기본값, extends
+- 제네릭 기본값, extends (제약 조건)
 ```typescript
 function add<T extends string>(x: T, y: T): T { return x + y }
 add(1, 2);
@@ -492,6 +428,28 @@ const hihi: <T>(x: T, y: T) => T = (x, y) => x;
 // <T extends (...args: any) => any> // 모든 함수, T는 함수만 됨. 함수 제한 
 // <T extends abstract new (...args: any) => any> // 생성자 타입, 클래스 말하는건감?
 // <T extends keyof any> // string | number | symbol
+
+```
+
+```typescript
+function hi<T extends S> 의 의미 (부분 집합)
+```
+![[Pasted image 20231007184432.png]]
+
+- 제네릭 화살표 함수
+```typescript
+const a: <T>(x: T) => T = (x) => {
+   return x;
+}
+
+const b = <T extends {}>(): T => {
+    return ;
+}
+
+type test<T> = () => T;
+const c: test<string> = () => {
+    return 'hi';
+}
 ```
 
 - Type predicate, is 키워드
@@ -508,8 +466,8 @@ const stringFiltered= ['1', 2, '3', 4, '5'].filter((value): value is string => t
 ```
 
 - 함수에서 공변성과 반공변성 주의!
-리턴값은 더 넓은 타입에 더 좁은 타입 대입 가능
-매개변수는 상관없음.  
+리턴값은 더 넓은 타입에 더 좁은 타입 대입 가능, 반대는 불가능
+매개변수는 상관없음.  (일단 좁은거에 넓은거 대입 가능이라고 생각하면됨, 반대 가능)
 ```typescript
 
 // ---------------------------------------- 가능
@@ -840,6 +798,7 @@ function applyStringMapping(symbol: Symbol, str: string) {
 interface ThisType<T> { }
 ```
 
+## 마무리 강의
 ## Distributive Conditional Types
 
 conditional type 을 제네릭 타입에 적용하면 분배 법칙이 성립되는데  
@@ -853,16 +812,81 @@ type ToArrayNonDist<Type> = [Type] extends [any] ? Type[] : never;
 type StrArrOrNumArr = ToArrayNonDist<string | number>;
 ```
 
+### never와 관련해서 헷갈리는 것
+```typescript
+let onlyBoolean = <T extends boolean>(arg: T= false): T => {
+    return arg;
+};
+
+// (arg: T = false)에서 오류 발생
+// why?
+
+type isNeverExtendsBoolean = never extends boolean ? 'yes' : 'no'; // yes
+
+onlyBoolean<never>(); // never인데 기본값이 false는 허용되지 않음.
+```
+
+### Union & Intersection
+```typescript
+type Union<T> = T extends { a: infer U, b: infer U } ? U : never;
+type Result1 = Union<{ a: 1 | 2, b: 2 | 3 }>;
+
+// 반공변성 2 | 3 ⊂ 1 | 2    =>  결과는 2
+type Intersection<T> = T extends {
+    a: (pa: infer U) => void,
+    b: (pb: infer U) => void
+} ? U : never;
+type Result2 = Intersection<{ a(pa: 1 | 2): void, b(pb: 2 | 3): void }>;
+```
+매개변수에 infer 을 넣으면 교집합 기능이 실행됨.
+why? 함수의 공변성 반공변성 때문
+매개변수는 좁은 타입에  더 넓은 타입을 넣는게 가능
+
+### Ambient declaration(엠비언트 선언), declare
+외부에 자바스크립트 파일이 있고 그거에 대한 dts 파일을 따로 만들고자 할 때 사용함.
+엠비언트 선언도 선언 병합이 된다.
+```typescript
+declare namespace NS {
+	const v: string;
+}
+declare enum Enum {
+	ADMIN = 1
+}
+declare function func(param: number): string;
+declare const variable: number;
+declare class C {
+	constructor(p1: string, p2: string);
+}
+
+new C(func(variable), NS.v);
+```
 
 
+![[Pasted image 20231007210507.png]]
+
+```typescript
+declare class A {
+	constructor(name: string);
+} 
+// 생성자 함수
+function A(name: string){
+	return new A(name);
+}
+// 자바스크립트에서는 가능한데 타입스크립트에서 둘다 선언은 어렵기 때문에 declare를 사용하면 편하게 할 수 있음.
+new A('jong');
+A('jong');
+```
 
 
+### 값과 타입
 
+![[Pasted image 20231007210445.png]]
 
+컴파일 했을 때 javascript에 남아있는 것들은 값 O
+typescript에만 있는 것들은 타입 O
 
-
-
-
+### Decorator 데코레이터
+좀 어려운 부분이 있어서 일단 skip.
 
 
 

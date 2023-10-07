@@ -280,3 +280,66 @@ name을 바꾸면 input도 바꿔진다.
 input 태그에서 같은 name으로 그룹을 형성하면 
 type이 radio인 경우 bind:group에 해당 value가 저장되고,
 type이 checkbox인 경우 bind:group에 체크한 value가 배열에 저장된다.
+
+### Select mutiple
+select 태그에 mutilple 이라는 속성이 있음. 
+`control`키를 누르면 여러개를 선택할 수 있음. 
+```html
+<select multiple bind:value={flavours}> 
+		{#each ['cookies and cream', 'mint choc chip', 'raspberry ripple'] as flavour}
+		<option>{flavour}</option> 
+	{/each} 
+</select>
+```
+여러 개 선택 시 value에 배열이 주르륵 들어감.
+단일 선택 시 한 개만 들어감.
+
+### Textarea inputs
+```html
+<textarea bind:value></textarea>
+```
+The `<textarea>`  element behaves similarly to a text input in Svelte
+
+## **Lifecycle**
+
+### onMount
+모든 컴포넌트에는 lifecycle이 존재한다.
+가장 많이 사용할 onMount는 컴포넌트가 DOM에 처음 렌더링된 후 작동된다.
+```html
+<script>
+	import {onMount} from 'svelte';
+	import { paint } from './gradient.js';
+
+	onMount(() => {
+		const canvas = document.querySelector('canvas');
+		const context = canvas.getContext('2d');
+
+		requestAnimationFrame(function loop(t) {
+			requestAnimationFrame(loop);
+			paint(context, t);
+		});
+	})
+</script>
+```
+
+### beforeUpdate and afterUpdate
+
+일단 처음 Component가 마운트가 되기 전 beforeUpdate 시작
+그리고 DOM이 업데이트 되기 전 시작.
+DOM이 업데이트 된 후 afterUpdate 시작.
+
+
+렌더링과 마운트 차이?
+스벨트에서 표현하는 것을 정리해보면 만들어진 DOM에 컴포넌트가 rendering(시멘트칠, 주다, 제공하다)되면 마운트가 작동함. ㅇㅋ? 
+
+즉 *초기 실행순서는*
+1. component를 DOM에 rendering
+2. beforeUpdate
+3. onMount
+4. afterUpdate
+
+### tick
+불필요한 작업을 피하고, 브라우저가 일괄 처리를 효율적으로 하기 위해서 스벨트는 컴포넌트 상태를 업데이트 할 때 바로 DOM을 업데이트 시키지 않는다.
+
+하지만 tick을 사용하면 그 시점에서 바로 컴포넌트 상태를 DOM에 업데이트 해준다(사용 시 Promise를 반환). 
+tick은 언제든 사용 가능하다. 
