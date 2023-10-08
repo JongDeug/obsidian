@@ -1,6 +1,7 @@
 # Type Aliases(타입 별칭)
 
 ### Type
+- Type끼리 병합 불가능
 ```typescript
 type Point = {
 	x: number;

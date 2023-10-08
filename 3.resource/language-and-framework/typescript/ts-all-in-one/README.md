@@ -14,88 +14,6 @@
 # ts 기본 문법
 
 
-- 특수한 타입 {} (null과 undefined가 아닌 모든 타입)
-```typescript
-const z: {} = 5;
-```
-
-- ts가 추론해주는 타입이 있는데 이런 건 그냥 그대로 사용하면 됨. ts가 추론하지 못하는 경우에만 직접 타이핑할 것.
-```typescript
-const a = 5;
-const b = '3';
-const c = a + b;
-function add(x: number, y: number) { return x + y }
-```
-
-- **: 뒷부분, as 뒷부분, <> 부분, interface, type, function** 일부를 제외하면 자바스크립트와 동일. 제외하고 생각하는 연습을 초반에 해야 함.
-```typescript
-const obj: { lat: number, lon: number } = { lat: 37.5, lon: 127.5 };
-const obj = { lat: 37.5, lon: 127.5 };
-
-const a = document.querySelector('#root') as HTMLDivElement;
-const a = document.querySelector('#root');
-
-function add<T>(x: T, y: T): T { return x + y }
-function add(x, y) { return x + y }
-
-interface A {};
-type A = {};
-```
-
-- 자바스크립트에 비해서 자유도가 확 줄어듦(ex: 변수에 문자열을 넣었다가 숫자로 바꾸는 등의 행동 어려워짐)
-```typescript
-let x = 5;
-x = 'hello';
-```
-
-- any를 최대한 쓰지 않는 것을 목표로 할 것.
-- never, unknown, any 타입 주의하기. any는 최대한 피하고 쓰더라도 나중에 꼭 제대로 타이핑하기.
-- [never 좋은 설명 글](https://ui.toast.com/weekly-pick/ko_20220323)
-```typescript
-try {
-  const array = []; // noImplicitAny가 false일 때
-  array[0];
-} catch(error) {
-  error;
-}
-```
-
-- 느낌표 !(non-null assertion), 최대한 ! 대신 if를 쓸 것
-- !를 붙이면 "내가 head가 있음을 책임진다." 라는 뜻을 가지게 됨.
-```typescript
-const head = document.querySelector('#head')!;
-console.log(head);
-
-const head = document.querySelector('#head');
-if (head) {
-  console.log(head);
-}
-```
-
-- string과 String은 다름. 소문자로 하는 것 기억하기.
-```typescript
-const a: string = 'hello';
-const b: String = 'hell';
-```
-
-- 템플릿 리터럴 타입이 존재(유니언 등 사용 가능)
-```typescript
-type World = "world" | "hell";
-
-// type Greeting = "hello world"
-type Greeting = `hello ${World}`;
-```
-
-- 배열, 튜플 문법
-```typescript
-let arr: string[] = [];
-let arr2: Array<string> = [];
-function rest(...args: string[]) {}
-
-const tuple: [string, number] = ['1', 1];
-tuple[2] = 'hello';
-tuple.push('hello');
-```
 
 - enum, keyof, typeof
 as const 를 사용해서 type을 정교하게 만듦.
@@ -147,14 +65,6 @@ walk(EDirection.Left);
 run(ODirection.Right);
 ```
 
-- 객체 타이핑: type과 interface 구분하기
-```typescript
-type A = { a: string };
-const a: A = { a: 'hello' };
-
-interface B { a: string }
-const b: B = { a: 'hello' };
-```
 
 
 
@@ -217,110 +127,8 @@ declare class A {}
 ![image](https://user-images.githubusercontent.com/10962668/179646513-3c3be896-3bbc-4784-848b-06bc47e8b129.png)
 초록색 v도 x로 보면 됨. 
 
-- any 와 unknown 
-any는 타입 선언을 포기해버리는 거
-unknown는 현재 내가 타입을 잘 모를 때 사용함. 나중에 as로 직접 타입을 지정해 줘야 함 
-둘은 다른 거임.
-
-- 타입 가드(타입 거리 좁히기)
-```typescript
-function numOrStr(a: number | string) {
-  if (typeof a === 'string') {
-    a.split(',');  
-  } else {
-    a.toFixed(1);
-  }
-}
-
-function numOrNumArr(a: number | number[]) {
-  if (Array.isArray(a)) {
-    a.slice(1);  
-  } else {
-    a.toFixed(1);
-  }
-}
 
 
-
-type B = { type: 'b', bbb: string };
-type C = { type: 'c', ccc: string };
-type D = { type: 'd', ddd: string };
-type A = B | C | D;
-function typeCheck(a: A) {
-  if (a.type === 'b') {
-    a.bbb;
-  } else if (a.type === 'c') {
-    a.ccc;
-  } else {
-    a.ddd;
-  }
-}
-
-interface Cat { meow: number }
-interface Dog { bow: number }
-// custom type guard
-function catOrDog(a: Cat | Dog): a is Dog {
-  if ((a as Cat).meow) { return false }
-  return true;
-}
-const cat: Cat | Dog = { meow: 3 }
-if (catOrDog(cat)) {
-    console.log(a.bow);
-}
-if ('meow' in cat) {
-    console.log(a.meow);
-}
-const isRejected = (input: PromiseSettledResult<unknown>): input is PromiseRejectedResult => input.status === 'rejected';
-const isFulfilled = <T>(input: PromiseSettledResult<T>): input is PromiseFulfilledResult<T> => input.status === 'fulfilled';
-
-const promises = await Promise.allSettled([Promise.resolve('a'), Promise.resolve('b')]);
-const errors = promises.filter(isRejected);
-```
-
-```typescript
-class A {
-	aaa() {}
-}
-class B {
-	bbb() {}
-}
-function aOrB(param: A|B){
-    // 1. 타입 가드에서 class인 경우 instanceof 연산자도 가능!
-	if(param instanceof A){
-		param.aaa();
-	}
-}
-// 인스턴스를 넣어야 함.
-aOrB(new A());
-aOrB(new B());
-
-
-// 2. class 자체 타입은 typeof class, 클래스 이름은 instance를 가리킴.
-class Aclass {
-	//~~
-}
-const a: Aclass = new Aclass('123');
-const b: typeof Aclass = Aclass;
-```
-
-- {} 와 Object
-- {}, Object :  null, undefined 제외 모든 타입
-- unknown : {} | null | undefined
-```typescript
-const x: {} = "hello";  
-const y: Object = "hi";  
-const yy: object = { hello: "world"};  
-const z: unknown = "hi";
-
-// {}, Object = null, undefined 제외 모든 타입
-// Object !== object
-// unknown = {} | null | undefined
-if (z){  
-    z;  // {}
-} else {  
-    z;  // null | undefined
-}
-```
 
 - readonly
 ```typescript
@@ -395,62 +203,8 @@ let obj: { a: string, b?: string }  = { a: 'hello', b: 'world' }
 obj = { a: 'hello' };
 ```
 
-- 제네릭은 타입에 대한 함수라고 생각하면 됨. 추론을 활용하기
-```typescript
-function add<T>(x: T, y: T): T { return x + y }
-add<number>(1, 2);
-add(1, 2);
-add<string>('1', '2');
-add('1', '2');
-add(1, '2');
-```
 
-- 제네릭 선언 위치 기억하기
-```typescript
-function a<T>() {}
-class B<T>() {}
-interface C<T> {}
-type D<T> = {};
-const e = <T>() => {};
-```
 
-- 제네릭 기본값, extends (제약 조건)
-```typescript
-function add<T extends string>(x: T, y: T): T { return x + y }
-add(1, 2);
-add('1', '2')
-
-const hi = <T>(x: T, y: T) => ({x,y});
-const hihi: <T>(x: T, y: T) => T = (x, y) => x;
-
-// <T extends {...}> // 특정 객체
-// <T extends any[]> // 모든 배열
-// <T extends (...args: any) => any> // 모든 함수, T는 함수만 됨. 함수 제한 
-// <T extends abstract new (...args: any) => any> // 생성자 타입, 클래스 말하는건감?
-// <T extends keyof any> // string | number | symbol
-
-```
-
-```typescript
-function hi<T extends S> 의 의미 (부분 집합)
-```
-![[Pasted image 20231007184432.png]]
-
-- 제네릭 화살표 함수
-```typescript
-const a: <T>(x: T) => T = (x) => {
-   return x;
-}
-
-const b = <T extends {}>(): T => {
-    return ;
-}
-
-type test<T> = () => T;
-const c: test<string> = () => {
-    return 'hi';
-}
-```
 
 - Type predicate, is 키워드
 ```typescript
