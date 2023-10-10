@@ -343,3 +343,59 @@ DOM이 업데이트 된 후 afterUpdate 시작.
 
 하지만 tick을 사용하면 그 시점에서 바로 컴포넌트 상태를 DOM에 업데이트 해준다(사용 시 Promise를 반환). 
 tick은 언제든 사용 가능하다. 
+
+
+
+## Stores
+
+### Writable stores
+
+store is simply an object.
+
+writable store 은 
+- `subscribe` 
+```javascript
+count.subscribe((value) => {
+	count_value = value;
+});
+```
+- `set`
+```javascript
+count.set(0);
+```
+- `update`
+```javascript
+count.update((n) => n - 1);
+```
+
+### Auto-subscriptions
+
+> Calling a `subscribe` method returns an `unsubscribe` function
+
+반환 값을 받고 `onDestroy(unsubscribe)`로 memory leak을 방지할 수 있지만 여러 stores를 구독하면 반복적인 코드가 생성됨.
+
+Svelte는 다 지우고 `$`: 를 붙이면 자동 구독(+ 구독 취소)이 된다고 알려줌.
+
+`$`: 를 가진 store value는 마크업 뿐만 아니라 `<script>` 에서도 사용 가능함.
+
+### Readable stores
+
+```javascript
+export const time = readable(null, function start(set) {
+	// setup code goes here
+	set();
+	
+	return function stop() {
+		// teardown code goes here
+	};
+});
+```
+
+1번째 인자는 initial value
+2번째 인자는 start function, 반환 값은 stop function
+
+start function은 처음 구독자가 읽을 때 호출.
+stop function은 마지막 구독자가 unsubscribe 했을 때 호출.
+
+
+### Derived stores
