@@ -343,3 +343,128 @@ DOM이 업데이트 된 후 afterUpdate 시작.
 
 하지만 tick을 사용하면 그 시점에서 바로 컴포넌트 상태를 DOM에 업데이트 해준다(사용 시 Promise를 반환). 
 tick은 언제든 사용 가능하다. 
+
+
+
+## Stores
+
+### Writable stores
+
+store is simply an object.
+
+writable store 은 
+- `subscribe` 
+```javascript
+count.subscribe((value) => {
+	count_value = value;
+});
+```
+- `set`
+```javascript
+count.set(0);
+```
+- `update`
+```javascript
+count.update((n) => n - 1);
+```
+
+### Auto-subscriptions
+
+> Calling a `subscribe` method returns an `unsubscribe` function
+
+반환 값을 받고 `onDestroy(unsubscribe)`로 memory leak을 방지할 수 있지만 여러 stores를 구독하면 반복적인 코드가 생성됨.
+
+Svelte는 다 지우고 `$` 를 붙이면 자동 구독(+ 구독 취소)이 된다고 알려줌.
+> 기본적으로 변수 앞에 `$`를 붙이면 store로 추정함. 이외에는 Svelte에서 prevent해줌.
+
+`$`: 를 가진 store value는 마크업 뿐만 아니라 `<script>` 에서도 사용 가능함.
+
+### Readable stores
+
+```javascript
+export const time = readable(null, function start(set) {
+	// setup code goes here
+	set();
+	
+	return function stop() {
+		// teardown code goes here
+	};
+});
+```
+
+1번째 인자는 initial value
+2번째 인자는 start function, 반환 값은 stop function
+
+start function은 처음 구독자가 읽을 때 호출.
+stop function은 마지막 구독자가 unsubscribe 했을 때 호출.
+
+### Derived stores
+
+다른 store를 가지고 파생 stores를 만들 수 있음.
+
+함수에 대한 타입과 정보는 Docs를 참고.
+
+```javascript
+export const elapsed = derived(
+	time, 
+	($time) => Math.round(($time - start) / 1000) 
+);
+```
+
+### Custom stores
+
+객체가 `subscribe` method만 제대로 구현한다면 그건 store이다.
+
+store.js
+```javascript
+import { writable } from 'svelte/store';
+
+function createCount() {
+	const { subscribe, set, update } = writable(0);
+
+	return {
+		subscribe,
+		increment: () => {update((n) => n + 1)},
+		decrement: () => {update((n) => n - 1)},
+		reset: () => {set(0)}
+	};
+}
+```
+
+### Store bindings
+
+store를 바인딩 시켜줄 수 있음.
+set, update 없이 바로 가능하네 좋다!
+```html
+<input bind:value={$name}>
+```
+
+# Part 2: Advanced Svelte
+
+## **Motion**
+
+시각 효과를 주기 위해서 `writeable` 대신 사용함.
+- Tweens 
+- Springs
+	often works better for values that frequently changing than Tweens.
+
+### The transition directive
+
+- fade
+- fly
+- In and out(fade와 fly 등을 컨트롤 할 수 있음)
+
+### Custom CSS transitions, Custom JS transitions
+
+fade, fly 와 같은 transition 들을 만들 수 도 있음.
+
+CSS 만으로 안되는 것들도 `tick()` 안에 JS를 통해서 만들 수 있는듯.
+
+### Transition events
+
+`on:introstart`
+`on:introend`
+`on:outrostart`
+`on:outroend`
+와 같은 Event를 통해서 can know when transitions are beginning and ending
+
