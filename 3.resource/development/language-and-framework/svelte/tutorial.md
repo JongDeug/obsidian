@@ -374,7 +374,8 @@ count.update((n) => n - 1);
 
 반환 값을 받고 `onDestroy(unsubscribe)`로 memory leak을 방지할 수 있지만 여러 stores를 구독하면 반복적인 코드가 생성됨.
 
-Svelte는 다 지우고 `$`: 를 붙이면 자동 구독(+ 구독 취소)이 된다고 알려줌.
+Svelte는 다 지우고 `$` 를 붙이면 자동 구독(+ 구독 취소)이 된다고 알려줌.
+> 기본적으로 변수 앞에 `$`를 붙이면 store로 추정함. 이외에는 Svelte에서 prevent해줌.
 
 `$`: 를 가진 store value는 마크업 뿐만 아니라 `<script>` 에서도 사용 가능함.
 
@@ -397,5 +398,133 @@ export const time = readable(null, function start(set) {
 start function은 처음 구독자가 읽을 때 호출.
 stop function은 마지막 구독자가 unsubscribe 했을 때 호출.
 
-
 ### Derived stores
+
+다른 store를 가지고 파생 stores를 만들 수 있음.
+
+함수에 대한 타입과 정보는 Docs를 참고.
+
+```javascript
+export const elapsed = derived(
+	time, 
+	($time) => Math.round(($time - start) / 1000) 
+);
+```
+
+### Custom stores
+
+객체가 `subscribe` method만 제대로 구현한다면 그건 store이다.
+
+store.js
+```javascript
+import { writable } from 'svelte/store';
+
+function createCount() {
+	const { subscribe, set, update } = writable(0);
+
+	return {
+		subscribe,
+		increment: () => {update((n) => n + 1)},
+		decrement: () => {update((n) => n - 1)},
+		reset: () => {set(0)}
+	};
+}
+```
+
+### Store bindings
+
+store를 바인딩 시켜줄 수 있음.
+set, update 없이 바로 가능하네 좋다!
+```html
+<input bind:value={$name}>
+```
+
+# Part 2: Advanced Svelte
+
+## **Motion**
+
+시각 효과를 주기 위해서 `writeable` 대신 사용함.
+- Tweens 
+- Springs
+	often works better for values that frequently changing than Tweens.
+
+## Transitions
+### The transition directive
+
+- fade
+- fly
+- In and out(fade와 fly 등을 컨트롤 할 수 있음)
+
+### Custom CSS transitions, Custom JS transitions
+
+fade, fly 와 같은 transition 들을 만들 수 도 있음.
+
+CSS 만으로 안되는 것들도 `tick()` 안에 JS를 통해서 만들 수 있는듯.
+
+### Transition events
+
+`on:introstart`
+`on:introend`
+`on:outrostart`
+`on:outroend`
+와 같은 Event를 통해서 can know when transitions are beginning and ending
+
+### Global transitions
+
+`global` 태그를 붙여주면 개별 블록에만 transition이 적용되지 않고 광범위하게 적용된다.
+
+Svelte 3에서는 `global`이 default 값이라 로컬로 바꿔주고 싶으면 `local` 키워드를 붙여주면 된다.
+
+### Key blocks
+
+보통 사용자가 action을 취하면 transition이 일어난다. (+ when the element enters or leaves the DOM.)
+하지만 사용자가 action을 취하지 않은 경우에도 transition이 일어나는 것을 본 적이 있다.
+
+값이 바뀔 때마다 transition 작동 ?! )
+	value가 (여기선 `i`) 바뀌었을 때마다 블록 안에 있는 transition을 작동하게 만들 수 있는데,
+	`{#key i}{/key}` 를 사용하면 된다.
+
+### Deferred transitions
+
+보내고, 받고 같이 transition을 연기하여 여러 요소 간에 조정을 할 수 있는 기능이다.
+이건 tutorial 예제 코드를 참고하길. 
+
+어려웡!
+
+
+
+
+## Animations
+
+### The animate directive
+
+이전 튜토리얼에서 todo 리스트를 왔다 갔다 이동 시켰는데 그 외 리스트들이 좀 딱딱하게 움직였다.(나머지 리스트들이 올라오고 내려가고)
+
+근데 `animate` directive를 사용해서  `animate:flip={{duration:1000}}` 을 했더니 !!
+나머지 리스트들이 이쁘게 올라오고 내려갔다.
+
+## Actions
+
+### The use directive
+
+Actions 은 element-level lifecycle functions 이다
+
+- interfacing with third-party libraries
+- lazy-loaded images
+- tooltips
+- adding custom event handlers
+
+이 4가지에 유용하게 사용된다.
+
+튜토리얼에서는 아마도 custom event handlers에 해당하는 것 같다.
+
+`<div class="menu" use:trapFocus>`
+
+
+
+
+
+### Adding parameters
+
+transitions 와 animations 와 같이 action 도 argument를 가질 수 있다. 
+tutorial 에서는 tooltip 예제를 다룬다.

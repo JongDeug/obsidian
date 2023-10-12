@@ -6,10 +6,10 @@ kanban-plugin: basic
 
 ## Todo
 
-- [ ] 누나가 보내준 obsidian 강의
 - [ ] 이산수학 2장 과제 @{2023-10-12} @@{11:30}
 - [ ] Promise, Iterator 공부하기!
-- [ ] typescript, python Index 정리하기
+- [ ] typescript 정리하기
+- [ ] 개발자 기초 그림으로 정리하기
 
 
 ## [[취업]]

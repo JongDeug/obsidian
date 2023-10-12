@@ -1,5 +1,7 @@
 {
   "tabSize": 4,
   "vimMode": true,
-  "attachmentFolderPath": "attached-file"
+  "attachmentFolderPath": "attached-file",
+  "showUnsupportedFiles": true,
+  "alwaysUpdateLinks": true
 }
