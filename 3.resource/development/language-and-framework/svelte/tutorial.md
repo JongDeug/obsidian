@@ -448,6 +448,9 @@ set, update 없이 바로 가능하네 좋다!
 - Springs
 	often works better for values that frequently changing than Tweens.
 
+
+## Transitions
+
 ### The transition directive
 
 - fade
@@ -482,5 +485,48 @@ Svelte 3에서는 `global`이 default 값이라 로컬로 바꿔주고 싶으면
 값이 바뀔 때마다 transition 작동 ?! )
 	value가 (여기선 `i`) 바뀌었을 때마다 블록 안에 있는 transition을 작동하게 만들 수 있는데,
 	`{#key i}{/key}` 를 사용하면 된다.
+
+
+### Deferred transitions
+
+보내고, 받고 같이 transition을 연기하여 여러 요소 간에 조정을 할 수 있는 기능이다.
+이건 tutorial 예제 코드를 참고하길. 
+
+어려웡!
+
+
+## Animations
+
+### The animate directive
+
+이전 튜토리얼에서 todo 리스트를 왔다 갔다 이동 시켰는데 그 외 리스트들이 좀 딱딱하게 움직였다.(나머지 리스트들이 올라오고 내려가고)
+
+근데 `animate` directive를 사용해서  `animate:flip={{duration:1000}}` 을 했더니 !!
+나머지 리스트들이 이쁘게 올라오고 내려갔다.
+
+## Actions
+
+### The use directive
+
+Actions 은 element-level lifecycle functions 이다
+
+- interfacing with third-party libraries
+- lazy-loaded images
+- tooltips
+- adding custom event handlers
+
+이 4가지에 유용하게 사용된다.
+
+튜토리얼에서는 아마도 custom event handlers에 해당하는 것 같다.
+
+`<div class="menu" use:trapFocus>`
+
+
+### Adding parameters
+
+transitions 와 animations 와 같이 action 도 argument를 가질 수 있다. 
+tutorial 에서는 tooltip 예제를 다룬다.
+
+
 
 
