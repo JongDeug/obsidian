@@ -468,3 +468,19 @@ CSS 만으로 안되는 것들도 `tick()` 안에 JS를 통해서 만들 수 있
 `on:outroend`
 와 같은 Event를 통해서 can know when transitions are beginning and ending
 
+### Global transitions
+
+`global` 태그를 붙여주면 개별 블록에만 transition이 적용되지 않고 광범위하게 적용된다.
+
+Svelte 3에서는 `global`이 default 값이라 로컬로 바꿔주고 싶으면 `local` 키워드를 붙여주면 된다.
+
+### Key blocks
+
+보통 사용자가 action을 취하면 transition이 일어난다. (+ when the element enters or leaves the DOM.)
+하지만 사용자가 action을 취하지 않은 경우에도 transition이 일어나는 것을 본 적이 있다.
+
+값이 바뀔 때마다 transition 작동 ?! )
+	value가 (여기선 `i`) 바뀌었을 때마다 블록 안에 있는 transition을 작동하게 만들 수 있는데,
+	`{#key i}{/key}` 를 사용하면 된다.
+
+
