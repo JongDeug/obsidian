@@ -441,14 +441,16 @@ set, update 없이 바로 가능하네 좋다!
 
 # Part 2: Advanced Svelte
 
-## **Motion**
+## *Motion*
 
 시각 효과를 주기 위해서 `writeable` 대신 사용함.
 - Tweens 
 - Springs
 	often works better for values that frequently changing than Tweens.
 
-## Transitions
+
+## *Transitions*
+
 ### The transition directive
 
 - fade
@@ -484,6 +486,7 @@ Svelte 3에서는 `global`이 default 값이라 로컬로 바꿔주고 싶으면
 	value가 (여기선 `i`) 바뀌었을 때마다 블록 안에 있는 transition을 작동하게 만들 수 있는데,
 	`{#key i}{/key}` 를 사용하면 된다.
 
+
 ### Deferred transitions
 
 보내고, 받고 같이 transition을 연기하여 여러 요소 간에 조정을 할 수 있는 기능이다.
@@ -492,9 +495,7 @@ Svelte 3에서는 `global`이 default 값이라 로컬로 바꿔주고 싶으면
 어려웡!
 
 
-
-
-## Animations
+## *Animations*
 
 ### The animate directive
 
@@ -503,7 +504,7 @@ Svelte 3에서는 `global`이 default 값이라 로컬로 바꿔주고 싶으면
 근데 `animate` directive를 사용해서  `animate:flip={{duration:1000}}` 을 했더니 !!
 나머지 리스트들이 이쁘게 올라오고 내려갔다.
 
-## Actions
+## *Actions*
 
 ### The use directive
 
@@ -521,10 +522,319 @@ Actions 은 element-level lifecycle functions 이다
 `<div class="menu" use:trapFocus>`
 
 
-
-
-
 ### Adding parameters
 
 transitions 와 animations 와 같이 action 도 argument를 가질 수 있다. 
 tutorial 에서는 tooltip 예제를 다룬다.
+
+
+
+
+## *Advanced bindings*
+
+### Contenteditable
+
+`contenteditable` attribute support `textContent` and `innerHTML` bindings.
+
+```html
+let hmlt = '<p>Hello</p>'
+<div bind:textContent={html} contenteditable/>
+<div bind:innerHTML={html} contenteditable/>
+```
+
+## *Each block bindings*
+
+`each` block 안에도 `bind` 를 사용할 수 있음.
+
+> [!note] Note!
+>  하지만 array를 mutate 시키기 때문에 immutable data를 사용하고 싶으면 event handlers를 쓰도록 해.
+
+### Media elements
+
+Media elements 에도 `bind`를 해서 편하게 다룰 수 있음.
+필요하면 예제 참고하기!
+
+### Demensions
+
+Every block-level element has `clientWidth` `clientHeight` `offsetWidth` `offsetHeight` bindings!!!(+ These bindings are readonly)
+
+### This
+
+`document.querySelector('canvas')` 우리가 이 구문을 썼을 때,
+It might not be the one belonging to our component 
+
+대신에 
+```html
+<canvas bind:this={canvas} width={32} height={32}>
+</canvas>
+```
+
+`bind:this={canvas}` 를 쓰면 된다.
+
+### Component bindings
+
+다른 Component에 바인딩을 할 수 있음.
+
+```html
+<Keypad bind:value={pin} on:submit={handleSubmit} />
+```
+
+> [!note] 주의!
+> 너무 많이 사용하면 데이터 흐름을 추적하기 어렵기 때문에 조금만 사용하세요.
+
+### Binding to component instances
+
+Canvas Component instance에
+`<Canvas bind:this={canvas} color={selected} size={size} />` 를 사용했다면 canvas의 메소드를 쓸 수 있다.
+
+메소드는 export function으로 정의하면 된다.
+
+%% 잘 몰랐을 때 dispatch 를 사용해서 다룰려고 했었는데 그냥 이거 사용해야했네! %%
+
+## *Classes and styles*
+
+### The class directive
+
+```html
+<button class="card {flipped ? 'flipped' : ''}" 
+		on:click={() => flipped = !flipped} >
+```
+
+class에 이걸 많이 써서 Svelte에서는 special directive 를 제공해줌
+
+```html
+<button class="card" 
+		class:flipped={flipped} 
+		on:click={() => flipped = !flipped} >
+```
+
+`{flipped}` 가 참이면 `:flipped` 라는 class를 추가해줌.
+
+### Shorthand class directive
+
+`class:flipped={flipped}` 처럼 이름이 같은 경우가 많기 때문에 Svelte에서는 shorthand를 제공해줌.
+
+`class:flipped`
+
+### The style directive
+
+`class` 와 마찬가지로 `style` attribute에도 삼항 연산자를 적용할 수 있음.
+
+```html
+<button class="card" 
+		style="transform: {flipped ? 'rotateY(0)' : ''}; --bg-1: palegoldenrod; --bg-2: black; --bg-3: goldenrod" 
+		on:click={() => flipped = !flipped} >
+```
+It looks a bit weird!
+
+so,
+```html
+<button 
+		class="card" 
+		style:transform={flipped ? 'rotateY(0)' : ''} 
+		style:--bg-1="palegoldenrod" 
+		style:--bg-2="black" 
+		style:--bg-3="goldenrod" 
+		on:click={() => flipped = !flipped} >
+```
+
+### Component style
+
+개별적으로 component에 style을 지정할 수 있음.
+
+예제 참고하기!!
+
+유용할 듯
+
+CSS custom property를 사용하는 것임.
+
+
+```html
+<style> 
+	.box { 
+		width: 5em;
+		height: 5em; 
+		border-radius: 0.5em; 
+		margin: 0 0 1em 0;
+		background-color: var(--color, #ddd); } 
+</style>
+```
+
+```html
+<div class="boxes"> 
+	<Box --color="red" /> 
+	<Box --color="green" /> 
+	<Box --color="blue" /> 
+</div>
+```
+
+
+## *Component composition(구성 요소들)*
+
+### Slots
+
+Component에 `<slot />` 넣으면 외부에서 Component 내부 내용을 채울 수 있음.
+
+### Named slots
+
+`<slot />`은 그냥 default 이지만 우리는 control이 필요할 때가 있음.
+
+따라서 
+```html
+<div class="card"> 
+	<header> 
+		<slot name="telephone" /> 
+		<slot name="company" /> 
+	</header>
+</div>
+```
+
+```html
+<Card>
+		<span slot="telephone">212 555 6342</span>
+
+		<span slot="company">
+			Pierce &amp; Pierce
+			<small>Mergers and Aquisitions</small>
+		</span>
+</Card>
+```
+
+이런 식으로 slot에 name을 붙이면 원하는 곳에 element를 넣을 수 있다.
+
+### Slot fallback
+fallback : 대안, 대비책
+
+만약 slot에 아무것도 들어와 있지 않다면 
+```html
+<slot name="telephone"> 
+	<i>(telephone)</i> 
+</slot>
+```
+fallback 을 `(contents)` 지정해줄 수 있음.
+
+### Slot props
+
+slot 에도 props 를 넣을 수 있음. `<slot item={item} />`
+
+그럼 slot에 내용물을 넣는 쪽에서 `let:` directive를 사용해서 `let:items={rows}` rows를 활용하면 됨.
+
+예제 보는게 더 빠를듯.
+
+#게시판나열  #검색
+
+### Checking for slot content
+
+만약 부모가 slot에 element들을 넣었는지 넣지 않았는지 확인 하고 싶다면 자식 컴포넌트에서 `$$slots` 변수를 사용하면 된다.
+```html
+{#if $$slots.header} 
+	<div class="header"> 
+		<slot name="header"/> 
+	</div> 
+{/if}
+```
+부모가  `<div slot="header" />` 를 전달해줬다면 `true` 아니면 `false` 가 됨.
+
+## *Context API*
+
+### setContext and getContext
+
+Advanced bindings 에서 [[#Binding to component instances]] 는 부모 자식 간에 데이터를 다뤘는데 이건 더 넓은 범위에서 다룸.
+
+> [!note] 주의!!!
+> setContext와 getContext는 반드시 parent child 관계를 가져야 한다. 그냥하면 에러가 뜸.
+> 
+> keep in mind that `getContext` is only gonna work for children of the `setContext` component
+
+
+
+
+## *Special elements*
+
+### <svelte:self>
+
+a module can't import itself. 
+하지만 `<svelte:self>` 를 사용한다면 재귀적으로 사용가능하다.
+
+### <svelte:component>
+
+`select` 태그에서 value를 바인딩해서  `<svelte:component this={selected.component}/>` 로
+해당 색깔을 선택했을 때 원하는 Component를 갈아 끼울 수 있게끔 만들어 줌.
+
+예제를 보면 이해가 깔끔함. 
+
+### <svelte:element>
+
+어떤 태그들이 랜더될지 다 알 수 없는 경우가 있다.
+`<svelte:element>` comes in handy here. (유용하다.)
+`<svelte:component>` 와 같이 `if` blocks 를 대체할 수 있음.
+
+예제 보기!
+
+### <svelte:window>
+
+`window` 객체에 `<svelte:window>` 를 사용해서 event listeners 를 추가할 수 있다.
+
+예제 참고!
+
+### <svelte:window> bindings
+
+바인딩 또한 할 수 있다!
+
+```html
+<svelte:window bind:scrollY={y}/>
+```
+
+binding 할 수 있는 속성들이 있는데 
+예제를 참고하면 되겠다.
+`scrollY` 와 `scrollX` 를 제외하고 모두 readonly임.
+
+### <svelte:body>
+
+similar to `<svelte:window>` 
+
+event listeners 를 추가할 수 있고 `document.body` 에서 발생하는 이벤트를 수신할 수 있다.
+
+useful with the `mouseenter` and `mouseleave` events, which don't fire on `window`
+
+> [!note] Note
+> document 객체와 window 객체에는 수용 가능한 eventList가 다르다!!
+
+### <svelte:document>
+
+`document` 에서 발생하는 events를 수신할 수 있다!
+
+useful with events like `selectionchange`, which doesn't fire on `window`
+
+> [!note] Note
+> `mouseleave` and `mosueenter` 은 `document` 에서 발생하지 않는다. 따라서 `<svelte:body>`를 대신쓰자.
+
+### <svelte:head>
+
+head 부분에 elements를 삽입할 수 있음.
+
+useful for things like `<title>` and `<meta>` tags, which are critical for good SEO(검색엔진 최적화)
+
+```html
+<svelte:head> 
+	<link rel="stylesheet" href="/stylesheets/{selected}.css" /> 
+</svelte:head>
+```
+
+### <svelte:options>
+
+예제를 보면 DOM을 변경하지 않더라도 업데이트된 `todos` array가 생성되면서 `done` 상태를 바꾸기 때문에 모두 flash 가 적용된다.
+
+이는 우리가 `todo` property를 절대로 변경하지 않겠다고 약속(대신 상황이 바뀔 때마다 새로운 객체를 생성할 것을 의미함)하면 해결할 수 있다.
+
+`<svelte:options immutable={true} />`
+or
+`<svelte:options immutable/>`
+
+여러 옵션들이 있는데 예제를 참고하길 바람.
+
+### <svelte:fragment>
+
+컨테이너 DOM 요소에 cotents를 래핑하지 않고 named slot에 콘텐츠를 배치할 수 있다.
+
+예제를 보면 Board.svelte의 `<div class="board" style="--size: {size}">` 에 직계 자손이여야 하는데 App.svelte의 `<div slot="game">`에 직계 자손이므로 `<svelte:fragment>` 를 사용하면 해결됨.
