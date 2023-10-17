@@ -441,7 +441,7 @@ set, update 없이 바로 가능하네 좋다!
 
 # Part 2: Advanced Svelte
 
-## **Motion**
+## *Motion*
 
 시각 효과를 주기 위해서 `writeable` 대신 사용함.
 - Tweens 
@@ -449,7 +449,7 @@ set, update 없이 바로 가능하네 좋다!
 	often works better for values that frequently changing than Tweens.
 
 
-## Transitions
+## *Transitions*
 
 ### The transition directive
 
@@ -495,7 +495,7 @@ Svelte 3에서는 `global`이 default 값이라 로컬로 바꿔주고 싶으면
 어려웡!
 
 
-## Animations
+## *Animations*
 
 ### The animate directive
 
@@ -504,7 +504,7 @@ Svelte 3에서는 `global`이 default 값이라 로컬로 바꿔주고 싶으면
 근데 `animate` directive를 사용해서  `animate:flip={{duration:1000}}` 을 했더니 !!
 나머지 리스트들이 이쁘게 올라오고 내려갔다.
 
-## Actions
+## *Actions*
 
 ### The use directive
 
@@ -530,3 +530,149 @@ tutorial 에서는 tooltip 예제를 다룬다.
 
 
 
+## *Advanced bindings*
+
+### Contenteditable
+
+`contenteditable` attribute support `textContent` and `innerHTML` bindings.
+
+```html
+let hmlt = '<p>Hello</p>'
+<div bind:textContent={html} contenteditable/>
+<div bind:innerHTML={html} contenteditable/>
+```
+
+## *Each block bindings*
+
+`each` block 안에도 `bind` 를 사용할 수 있음.
+
+> [!note] Note!
+>  하지만 array를 mutate 시키기 때문에 immutable data를 사용하고 싶으면 event handlers를 쓰도록 해.
+
+### Media elements
+
+Media elements 에도 `bind`를 해서 편하게 다룰 수 있음.
+필요하면 예제 참고하기!
+
+### Demensions
+
+Every block-level element has `clientWidth` `clientHeight` `offsetWidth` `offsetHeight` bindings!!!(+ These bindings are readonly)
+
+### This
+
+`document.querySelector('canvas')` 우리가 이 구문을 썼을 때,
+It might not be the one belonging to our component 
+
+대신에 
+```html
+<canvas bind:this={canvas} width={32} height={32}>
+</canvas>
+```
+
+`bind:this={canvas}` 를 쓰면 된다.
+
+### Component bindings
+
+다른 Component에 바인딩을 할 수 있음.
+
+```html
+<Keypad bind:value={pin} on:submit={handleSubmit} />
+```
+
+> [!note] 주의!
+> 너무 많이 사용하면 데이터 흐름을 추적하기 어렵기 때문에 조금만 사용하세요.
+
+### Binding to component instances
+
+Canvas Component instance에
+`<Canvas bind:this={canvas} color={selected} size={size} />` 를 사용했다면 canvas의 메소드를 쓸 수 있다.
+
+메소드는 export function으로 정의하면 된다.
+
+%% 잘 몰랐을 때 dispatch 를 사용해서 다룰려고 했었는데 그냥 이거 사용해야했네! %%
+
+## *Classes and styles*
+
+### The class directive
+
+```html
+<button class="card {flipped ? 'flipped' : ''}" 
+		on:click={() => flipped = !flipped} >
+```
+
+class에 이걸 많이 써서 Svelte에서는 special directive 를 제공해줌
+
+```html
+<button class="card" 
+		class:flipped={flipped} 
+		on:click={() => flipped = !flipped} >
+```
+
+`{flipped}` 가 참이면 `:flipped` 라는 class를 추가해줌.
+
+### Shorthand class directive
+
+`class:flipped={flipped}` 처럼 이름이 같은 경우가 많기 때문에 Svelte에서는 shorthand를 제공해줌.
+
+`class:flipped`
+
+### The style directive
+
+`class` 와 마찬가지로 `style` attribute에도 삼항 연산자를 적용할 수 있음.
+
+```html
+<button class="card" 
+		style="transform: {flipped ? 'rotateY(0)' : ''}; --bg-1: palegoldenrod; --bg-2: black; --bg-3: goldenrod" 
+		on:click={() => flipped = !flipped} >
+```
+It looks a bit weird!
+
+so,
+```html
+<button 
+		class="card" 
+		style:transform={flipped ? 'rotateY(0)' : ''} 
+		style:--bg-1="palegoldenrod" 
+		style:--bg-2="black" 
+		style:--bg-3="goldenrod" 
+		on:click={() => flipped = !flipped} >
+```
+
+### Component style
+
+개별적으로 component에 style을 지정할 수 있음.
+
+예제 참고하기!!
+
+유용할 듯
+
+CSS custom property를 사용하는 것임.
+
+
+```html
+<style> 
+	.box { 
+		width: 5em;
+		height: 5em; 
+		border-radius: 0.5em; 
+		margin: 0 0 1em 0;
+		background-color: var(--color, #ddd); } 
+</style>
+```
+
+```html
+<div class="boxes"> 
+	<Box --color="red" /> 
+	<Box --color="green" /> 
+	<Box --color="blue" /> 
+</div>
+```
+
+
+## *Component composition(구성 요소들)*
+
+### Slots
+
+Component에 `<slot />` 넣으면 외부에서 Component 내부 내용을 채울 수 있음.
+
+### Named slots
