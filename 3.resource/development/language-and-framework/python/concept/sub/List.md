@@ -24,7 +24,7 @@ del animals[1]
 print(animals)
 ```
 
-- Method(`len()`, `count()`, `sort()` ... )
+- Method(`len()`, `count()`, `sort()`, `split()` ... )
 ```python
 animals = ['코알라', '하이에나', '스컹크', '바다소', '바다소']
 
@@ -33,4 +33,16 @@ print(animals)
 
 print('바다소 count : {}'.format(animals.count('바다소')))
 print('list length : {}'.format(len(animals)))
+
+my_list = 'F T F T'
+	# slit() 공백 시 스페이스 기준으로 자름
+print(my_list.split())
+```
+
+- Unpacking, Destructure
+
+javascript에서 `...`과 같은 것
+```python
+my_list = [1,2,3,4,5]
+print(*my_list)
 ```

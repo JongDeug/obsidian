@@ -838,3 +838,117 @@ or
 컨테이너 DOM 요소에 cotents를 래핑하지 않고 named slot에 콘텐츠를 배치할 수 있다.
 
 예제를 보면 Board.svelte의 `<div class="board" style="--size: {size}">` 에 직계 자손이여야 하는데 App.svelte의 `<div slot="game">`에 직계 자손이므로 `<svelte:fragment>` 를 사용하면 해결됨.
+
+
+
+## *Module context*
+
+### Sharing code
+
+```html
+<script context="module"> 
+	let current; 
+</script>
+```
+
+Code will run once, when the module first evaluates, rather than when a component is instantiated.
+
+예제를 보면 AudioPlayer가 여러 개이다. 때문에 현재 상태를 저장하려면 static 같이 공통된 변수가 있어야 한다. `<script context="module">` 을 사용하면 해결 할 수 있다.
+
+### Exports
+
+바로 위 Sharing code `context="module"` 에서 변수나 함수를 export 를 할 수 있음.
+
+예제 참고
+
+> [!note] NOTE
+> default export는 사용할 수 없다. component가 default export 이기 때문.
+
+## *Miscellaneous(여러 가지 종류의)*
+
+### The @debug tag
+
+말 그대로 디버그 태그
+It's useful to inspect a piece of data as it flows through your app.
+
+
+# Part 3: Basic Sveltekit
+
+## *Introduction*
+
+Svelte가 component framework 라면 
+SvelteKit은 app framework 이다.
+
+- Routing
+- Server-side rendering
+- Data fetching
+- Service workers
+- Typescript Integration
+- Prerendering
+- Single-page apps
+- Library packaging
+- Optimised production builds
+- Deploying to different hosting providers
+
+등등 여러 가지 기능을 가지고 있다.
+
+## *Routing*
+
+### Pages
+
+`+page.svelte` : /
+about 폴더의 `+page.svelte` : /about
+
+### Layouts
+
+`+layout.svelte` 
+`<slot />` 사용해서 배치하면 됨.
+
+### Route parameters
+
+`src/routes/blog/[slug]/+page.svelte` 의 `[slug]` 와 같이 dynamic parameter를 사용할 수 있음.
+
+/blog/one, /blog/two 같은 게 가능함.
+
+Mutiple oute parameters도 된다는데 잘 모르겠음.
+
+## *Loading data*
+
+### Page data
+
+`+page.server.js` 에서 `load` function을 사용하면 해당 route에 필요한 data를 loading 할 수 있음.
+
+예제에서는 튜토리얼이라 `data.js` 를 import 했지만 database에서 가져와서 `load` 해도 됨!
+
+### Layout data
+
+`+layout.server.js` 에 `load` function을 사용하면 자식 route 까지 데이터를 loading 할 수 있음.
+
+기존 `+page.server.js` 는 해당 `+page.svetle` 에서 밖에 사용하지 못했음.
+`+layout.server.js` 를 사용하면 `+page.svelte` 뿐만 아니라 자식 route 의 `+page.svelte` 에서도 데이터를 사용할 수 있다.
+
+
+## *Headers and cookies*
+
+### Setting headers
+
+`load` function 안에서  응답에 대한 헤더를 설정할 수 있는 `setHeaders` 함수에 접근 할 수 있다. 
+
+예제 참고!
+
+아직 어디다가 쓰는지 잘 모르겠음.
+
+### Reading and writing cookies
+
+`setHeaders` function 은 `Set-Cookie` header 와 같이 사용하지 못한다. 대신 `cookies` API를 사용해야 한다.
+
+`cookies.get()` `cookies.set(name, value, options)` 를 통해서 읽고 쓸 수 있다.
+
+`options` 의 `path`는 명확하게 설정할 것을 강력하게 추천한다고 하네요.
+
+
+
+
+## *Shared modules*
+
+### The $lib alias
