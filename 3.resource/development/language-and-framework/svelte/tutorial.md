@@ -952,3 +952,20 @@ Mutiple oute parameters도 된다는데 잘 모르겠음.
 ## *Shared modules*
 
 ### The $lib alias
+
+`src/lib` 에 나만의 모듈을 만들었으면 
+`src` 안에 존재만 한다면 `$lib` alias로 간편하게 접근할 수 있다.
+
+즉, `import { message } from '../../../../../../lib/message.js';` 이 코드를 
+`import { message } from '$lib/message.js';` 이렇게 간편하게 만들 수 있다는 것!
+
+전에 이것 때문에 고생 좀 했는데 ㅠㅠ.
+## *Forms*
+
+### The `<form>` element
+
+`<form>` 태그를 사용해서 Todo list를 업데이트하는 예제이다.
+
+`+page.server.js` 에 `actions` 함수를 만들어서 POST 되면 리스트가 생성된다. 코드를 자세히 참고하면 되겠다.
+
+`<form>` 태그를 사용했기 때문에 `fetch` 같은 걸 사용할 필요도 없고 Javascript가 작동되지 않거나 사용하지 않아도 작동이 가능하다.
