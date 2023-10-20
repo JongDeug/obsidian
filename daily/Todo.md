@@ -9,7 +9,6 @@ kanban-plugin: basic
 - [ ] Promise, Iterator 공부하기!
 - [ ] typescript 정리하기
 - [ ] 얄코 정리(...)
-- [ ] svelte named form action 확인하기
 
 
 ## [[취업]]
@@ -57,6 +56,7 @@ kanban-plugin: basic
 - [ ] 이슈 로그, 트러블 슈팅 가이드
 - [ ] 이산수학 2장 과제 @{2023-10-12} @@{11:30}
 - [ ] 개발자 기초 그림으로 정리하기
+- [ ] svelte named form action 확인하기
 
 %% kanban:settings
 ```

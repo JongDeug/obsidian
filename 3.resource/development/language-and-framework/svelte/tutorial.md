@@ -840,7 +840,6 @@ or
 예제를 보면 Board.svelte의 `<div class="board" style="--size: {size}">` 에 직계 자손이여야 하는데 App.svelte의 `<div slot="game">`에 직계 자손이므로 `<svelte:fragment>` 를 사용하면 해결됨.
 
 
-
 ## *Module context*
 
 ### Sharing code
@@ -934,14 +933,12 @@ export function load({ params }) {
 }
 ```
 
-
 ### Layout data
 
 `+layout.server.js` 에 `load` function을 사용하면 자식 route 까지 데이터를 loading 할 수 있음.
 
 기존 `+page.server.js` 는 해당 `+page.svetle` 에서 밖에 사용하지 못했음.
 `+layout.server.js` 를 사용하면 `+page.svelte` 뿐만 아니라 자식 route 의 `+page.svelte` 에서도 데이터를 사용할 수 있다.
-
 
 ## *Headers and cookies*
 
@@ -960,7 +957,6 @@ export function load({ params }) {
 `cookies.get()` `cookies.set(name, value, options)` 를 통해서 읽고 쓸 수 있다.
 
 `options` 의 `path`는 명확하게 설정할 것을 강력하게 추천한다고 하네요.
-
 
 ## *Shared modules*
 
@@ -982,6 +978,7 @@ export function load({ params }) {
 `+page.server.js` 에 `actions` 함수를 만들어서 POST 되면 리스트가 생성된다. 코드를 자세히 참고하면 되겠다.
 
 `<form>` 태그를 사용했기 때문에 `fetch` 같은 걸 사용할 필요도 없고 Javascript가 작동되지 않거나 사용하지 않아도 작동이 가능하다.
+<<<<<<< HEADF
 
 ### Named form actions
 
@@ -1072,5 +1069,4 @@ delete 중일 때는 네트워크가 느려도 DB에서와는 다르게 유저�
 > + submit 할 때 프론트 단에서의 변경을 컨트롤 하려면 highlight와 같이 function에 뭔가를 넣으면 되고, 백엔드 API를 호출 시 컨트롤 동작은 `+page.server.js` 의 action function에서 구현하면 될 것 같음. 그러면 코드도 분리되고 깔끔하게 개발할 수 있을 것 같음.
 
 `use:enhance` 에는 다양한 이벤트들이 있으므로 Docs를 참고할 것.
-
 
