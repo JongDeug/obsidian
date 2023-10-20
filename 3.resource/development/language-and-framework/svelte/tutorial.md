@@ -676,3 +676,401 @@ CSS custom property를 사용하는 것임.
 Component에 `<slot />` 넣으면 외부에서 Component 내부 내용을 채울 수 있음.
 
 ### Named slots
+
+`<slot />`은 그냥 default 이지만 우리는 control이 필요할 때가 있음.
+
+따라서 
+```html
+<div class="card"> 
+	<header> 
+		<slot name="telephone" /> 
+		<slot name="company" /> 
+	</header>
+</div>
+```
+
+```html
+<Card>
+		<span slot="telephone">212 555 6342</span>
+
+		<span slot="company">
+			Pierce &amp; Pierce
+			<small>Mergers and Aquisitions</small>
+		</span>
+</Card>
+```
+
+이런 식으로 slot에 name을 붙이면 원하는 곳에 element를 넣을 수 있다.
+
+### Slot fallback
+fallback : 대안, 대비책
+
+만약 slot에 아무것도 들어와 있지 않다면 
+```html
+<slot name="telephone"> 
+	<i>(telephone)</i> 
+</slot>
+```
+fallback 을 `(contents)` 지정해줄 수 있음.
+
+### Slot props
+
+slot 에도 props 를 넣을 수 있음. `<slot item={item} />`
+
+그럼 slot에 내용물을 넣는 쪽에서 `let:` directive를 사용해서 `let:items={rows}` rows를 활용하면 됨.
+
+예제 보는게 더 빠를듯.
+
+#게시판나열  #검색
+
+### Checking for slot content
+
+만약 부모가 slot에 element들을 넣었는지 넣지 않았는지 확인 하고 싶다면 자식 컴포넌트에서 `$$slots` 변수를 사용하면 된다.
+```html
+{#if $$slots.header} 
+	<div class="header"> 
+		<slot name="header"/> 
+	</div> 
+{/if}
+```
+부모가  `<div slot="header" />` 를 전달해줬다면 `true` 아니면 `false` 가 됨.
+
+## *Context API*
+
+### setContext and getContext
+
+Advanced bindings 에서 [[#Binding to component instances]] 는 부모 자식 간에 데이터를 다뤘는데 이건 더 넓은 범위에서 다룸.
+
+> [!note] 주의!!!
+> setContext와 getContext는 반드시 parent child 관계를 가져야 한다. 그냥하면 에러가 뜸.
+> 
+> keep in mind that `getContext` is only gonna work for children of the `setContext` component
+
+
+
+
+## *Special elements*
+
+### <svelte:self>
+
+a module can't import itself. 
+하지만 `<svelte:self>` 를 사용한다면 재귀적으로 사용가능하다.
+
+### <svelte:component>
+
+`select` 태그에서 value를 바인딩해서  `<svelte:component this={selected.component}/>` 로
+해당 색깔을 선택했을 때 원하는 Component를 갈아 끼울 수 있게끔 만들어 줌.
+
+예제를 보면 이해가 깔끔함. 
+
+### <svelte:element>
+
+어떤 태그들이 랜더될지 다 알 수 없는 경우가 있다.
+`<svelte:element>` comes in handy here. (유용하다.)
+`<svelte:component>` 와 같이 `if` blocks 를 대체할 수 있음.
+
+예제 보기!
+
+### <svelte:window>
+
+`window` 객체에 `<svelte:window>` 를 사용해서 event listeners 를 추가할 수 있다.
+
+예제 참고!
+
+### <svelte:window> bindings
+
+바인딩 또한 할 수 있다!
+
+```html
+<svelte:window bind:scrollY={y}/>
+```
+
+binding 할 수 있는 속성들이 있는데 
+예제를 참고하면 되겠다.
+`scrollY` 와 `scrollX` 를 제외하고 모두 readonly임.
+
+### <svelte:body>
+
+similar to `<svelte:window>` 
+
+event listeners 를 추가할 수 있고 `document.body` 에서 발생하는 이벤트를 수신할 수 있다.
+
+useful with the `mouseenter` and `mouseleave` events, which don't fire on `window`
+
+> [!note] Note
+> document 객체와 window 객체에는 수용 가능한 eventList가 다르다!!
+
+### <svelte:document>
+
+`document` 에서 발생하는 events를 수신할 수 있다!
+
+useful with events like `selectionchange`, which doesn't fire on `window`
+
+> [!note] Note
+> `mouseleave` and `mosueenter` 은 `document` 에서 발생하지 않는다. 따라서 `<svelte:body>`를 대신쓰자.
+
+### <svelte:head>
+
+head 부분에 elements를 삽입할 수 있음.
+
+useful for things like `<title>` and `<meta>` tags, which are critical for good SEO(검색엔진 최적화)
+
+```html
+<svelte:head> 
+	<link rel="stylesheet" href="/stylesheets/{selected}.css" /> 
+</svelte:head>
+```
+
+### <svelte:options>
+
+예제를 보면 DOM을 변경하지 않더라도 업데이트된 `todos` array가 생성되면서 `done` 상태를 바꾸기 때문에 모두 flash 가 적용된다.
+
+이는 우리가 `todo` property를 절대로 변경하지 않겠다고 약속(대신 상황이 바뀔 때마다 새로운 객체를 생성할 것을 의미함)하면 해결할 수 있다.
+
+`<svelte:options immutable={true} />`
+or
+`<svelte:options immutable/>`
+
+여러 옵션들이 있는데 예제를 참고하길 바람.
+
+### <svelte:fragment>
+
+컨테이너 DOM 요소에 cotents를 래핑하지 않고 named slot에 콘텐츠를 배치할 수 있다.
+
+예제를 보면 Board.svelte의 `<div class="board" style="--size: {size}">` 에 직계 자손이여야 하는데 App.svelte의 `<div slot="game">`에 직계 자손이므로 `<svelte:fragment>` 를 사용하면 해결됨.
+
+
+
+## *Module context*
+
+### Sharing code
+
+```html
+<script context="module"> 
+	let current; 
+</script>
+```
+
+Code will run once, when the module first evaluates, rather than when a component is instantiated.
+
+예제를 보면 AudioPlayer가 여러 개이다. 때문에 현재 상태를 저장하려면 static 같이 공통된 변수가 있어야 한다. `<script context="module">` 을 사용하면 해결 할 수 있다.
+
+### Exports
+
+바로 위 Sharing code `context="module"` 에서 변수나 함수를 export 를 할 수 있음.
+
+예제 참고
+
+> [!note] NOTE
+> default export는 사용할 수 없다. component가 default export 이기 때문.
+
+## *Miscellaneous(여러 가지 종류의)*
+
+### The @debug tag
+
+말 그대로 디버그 태그
+It's useful to inspect a piece of data as it flows through your app.
+
+
+# Part 3: Basic Sveltekit
+
+## *Introduction*
+
+Svelte가 component framework 라면 
+SvelteKit은 app framework 이다.
+
+- Routing
+- Server-side rendering
+- Data fetching
+- Service workers
+- Typescript Integration
+- Prerendering
+- Single-page apps
+- Library packaging
+- Optimised production builds
+- Deploying to different hosting providers
+
+등등 여러 가지 기능을 가지고 있다.
+
+## *Routing*
+
+### Pages
+
+`+page.svelte` : /
+about 폴더의 `+page.svelte` : /about
+
+### Layouts
+
+`+layout.svelte` 
+`<slot />` 사용해서 배치하면 됨.
+
+### Route parameters
+
+`src/routes/blog/[slug]/+page.svelte` 의 `[slug]` 와 같이 dynamic parameter를 사용할 수 있음.
+
+/blog/one, /blog/two 같은 게 가능함.
+
+Mutiple oute parameters도 된다는데 잘 모르겠음.
+
+## *Loading data*
+
+### Page data
+
+`+page.server.js` 에서 `load` function을 사용하면 해당 route에 필요한 data를 loading 할 수 있음.
+
+예제에서는 튜토리얼이라 `data.js` 를 import 했지만 database에서 가져와서 `load` 해도 됨!
+
+throw error! 에러 던지기
+```javascript
+import { error } from '@sveltejs/kit'; 
+import { posts } from '../data.js'; 
+
+export function load({ params }) {
+	const post = posts.find((post) => post.slug === params.slug); 
+	
+	if (!post) throw error(404); 
+	
+	return { post }; 
+}
+```
+
+
+### Layout data
+
+`+layout.server.js` 에 `load` function을 사용하면 자식 route 까지 데이터를 loading 할 수 있음.
+
+기존 `+page.server.js` 는 해당 `+page.svetle` 에서 밖에 사용하지 못했음.
+`+layout.server.js` 를 사용하면 `+page.svelte` 뿐만 아니라 자식 route 의 `+page.svelte` 에서도 데이터를 사용할 수 있다.
+
+
+## *Headers and cookies*
+
+### Setting headers
+
+`load` function 안에서  응답에 대한 헤더를 설정할 수 있는 `setHeaders` 함수에 접근 할 수 있다. 
+
+예제 참고!
+
+아직 어디다가 쓰는지 잘 모르겠음.
+
+### Reading and writing cookies
+
+`setHeaders` function 은 `Set-Cookie` header 와 같이 사용하지 못한다. 대신 `cookies` API를 사용해야 한다.
+
+`cookies.get()` `cookies.set(name, value, options)` 를 통해서 읽고 쓸 수 있다.
+
+`options` 의 `path`는 명확하게 설정할 것을 강력하게 추천한다고 하네요.
+
+
+## *Shared modules*
+
+### The $lib alias
+
+`src/lib` 에 나만의 모듈을 만들었으면 
+`src` 안에 존재만 한다면 `$lib` alias로 간편하게 접근할 수 있다.
+
+즉, `import { message } from '../../../../../../lib/message.js';` 이 코드를 
+`import { message } from '$lib/message.js';` 이렇게 간편하게 만들 수 있다는 것!
+
+전에 이것 때문에 고생 좀 했는데 ㅠㅠ.
+## *Forms*
+
+### The `<form>` element
+
+`<form>` 태그를 사용해서 Todo list를 업데이트하는 예제이다.
+
+`+page.server.js` 에 `actions` 함수를 만들어서 POST 되면 리스트가 생성된다. 코드를 자세히 참고하면 되겠다.
+
+`<form>` 태그를 사용했기 때문에 `fetch` 같은 걸 사용할 필요도 없고 Javascript가 작동되지 않거나 사용하지 않아도 작동이 가능하다.
+
+### Named form actions
+
+`actions` function 에 `default` 말고도 원하는 이름을 지을 수 있다. 
+구현은 예제 참고!
+
+`<form method="POST" action="?/delete">` 
+`form` 태그의 `action` 속성에 경로와 원하는 이름을 설정하고 `+page.server.js`안에 `action` 객체 안에 `delete` function을 구현하면 된다.
+
+`action` function이 다른 페이지에 정의됐다면  `/todos?/delete` 와 같이 `?` 앞에 경로를 맞추면 된다.
+
+### Validation
+
+사용자는 말썽꾸러기들이라 요청한 값이 쓸모없거나 위험한 값일 수도 있다.
+
+막는 방법은
+
+1. 프론트 단에서 막기
+2. 서버에서 막기
+3. DB에서 막기
+
+정도가 되겠는데 
+
+프론트 단에서 막기는 쉬우니까 제외하고 
+
+서버에서 value checking 을 통해 해결하고 오류가 발생할 경우 `throw new Error`를 사용하면 된다.
+
+`+page.server.js` 에서는 
+
+```javascript
+import { fail } from '@sveltejs/kit';
+import * as db from '$lib/server/database.js'; 
+
+export function load({ cookies }) {...} 
+export const actions = { 
+	create: async ({ cookies, request }) => {
+	 const data = await request.formData(); 
+	 try { 
+		 db.createTodo(cookies.get('userid'), 
+		 data.get('description')); 
+	} catch (error) {
+		 return fail(422, { 
+			 description: data.get('description'), 
+			 error: error.message }); 
+		} 
+	}
+```
+
+와 같이 `fail` 을 사용하여 에러를 던져주면 된다.
+
+하지만 이 에러를 유저가 어떻게 확인해야 할까?
+
+바로 `+page.svelte` 에서 `export let form` 선언하고 `form` 객체를 사용해서 페이지에 나타내면 된다!!
+(+굳이 `fail` 로 묶지 않아도 됨.)
+
+### Progressively Enhance
+
+`form` 태그는 사용자가 Javascript를 가지고 있지 않아도 기능이 실행됨.
+
+근데 대부분의 사용자가 Javascript를 가지고 있기 때문에 
+`import { enhance } from '$app/forms';`
+`<form method="POST" action="?/create" use:enhance>`
+
+이렇게 `form` 태그에 `use:enhance`를 사용하면 full-page reload 기능 빼고 브라우저의 기본 행동을 에뮬레이트 할 것임.
+
+즉, `form` 태그의 기능이 강화됨. 
+기존에는 적용되지 않던 Transition 같은 기능을 사용할 수 있고, 여러 가지 기능들이 업그레이드 된다는 데 읽어봐도 잘 모르겠음. (튜토리얼 참고하면 나옴)
+
+
+### Customizing use:enhance
+
+예제에서 slow networking을 시뮬레이트 함.
+`await new Promise((fulfil) => setTimeout(fulfil, 1000));`
+
+`use:enhance`를 통해서 느린 네트워크에서 create, delete 할 때의 동작을 컨트롤함.
+
+create 중일 때는 `input` 태그의 disabled 속성을 컨트롤하고 로딩 동작을 추가.
+
+delete 중일 때는 네트워크가 느려도 DB에서와는 다르게 유저에게 바로 삭제되는 모습을 보여주기 위해 `deleting` 배열을 만들어서 컨트롤함. 
+코드에서 `await` 가 있는데 어떻게 `todos`를 바로 컨트롤 하여 보여주지? 라는 의문점을 가졌는데 `deleting` 배열이 변경 됨에 따라 `{#each data.todos.filter((todo) => !deleting.includes(todo.id)) as todo (todo.id)}` 이 코드도 같이 실행되게 때문에 컨트롤이 가능하다는 결론을 내렸음.
+
+===`use:enhance={function}` 의 function을 통해서 submit 할 때의 동작을 결정할 수 있는 것 같음.===
+
+> [!note] NOTE
+> It's a little confusing that the `enhance` action and `<form action>` are both called 'action'. 
+> 기존 html submit 버튼? 이 없어서 헷갈렸는데 둘 다 똑같이 action function을 호출하기 때문에 저기서 백엔드 API를 호출하면 될 것 같음.
+> 
+> + submit 할 때 프론트 단에서의 변경을 컨트롤 하려면 highlight와 같이 function에 뭔가를 넣으면 되고, 백엔드 API를 호출 시 컨트롤 동작은 `+page.server.js` 의 action function에서 구현하면 될 것 같음. 그러면 코드도 분리되고 깔끔하게 개발할 수 있을 것 같음.
+
+`use:enhance` 에는 다양한 이벤트들이 있으므로 Docs를 참고할 것.
+
+
