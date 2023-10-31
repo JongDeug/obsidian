@@ -937,7 +937,7 @@ export function load({ params }) {
 
 `+layout.server.js` 에 `load` function을 사용하면 자식 route 까지 데이터를 loading 할 수 있음.
 
-기존 `+page.server.js` 는 해당 `+page.svetle` 에서 밖에 사용하지 못했음.
+기존 `+page.server.js` 는 해당 `+page.svelte` 에서 밖에 사용하지 못했음.
 `+layout.server.js` 를 사용하면 `+page.svelte` 뿐만 아니라 자식 route 의 `+page.svelte` 에서도 데이터를 사용할 수 있다.
 
 ## *Headers and cookies*
@@ -1069,4 +1069,128 @@ delete 중일 때는 네트워크가 느려도 DB에서와는 다르게 유저�
 > + submit 할 때 프론트 단에서의 변경을 컨트롤 하려면 highlight와 같이 function에 뭔가를 넣으면 되고, 백엔드 API를 호출 시 컨트롤 동작은 `+page.server.js` 의 action function에서 구현하면 될 것 같음. 그러면 코드도 분리되고 깔끔하게 개발할 수 있을 것 같음.
 
 `use:enhance` 에는 다양한 이벤트들이 있으므로 Docs를 참고할 것.
+
+## *API routes*
+
+### GET handlers
+
+/roll/+server.js
+```javascript
+import { json } from '@sveltejs/kit';
+
+export function GET() {
+	const number = Math.floor(Math.random() * 6) + 1;
+
+	return json(number);
+}
+```
+
++page.svelte
+```javascript
+async function roll() {
+	const response = await fetch('/roll');
+	number = await response.json();
+}
+```
+
+fetch 를 사용하는 방법도 있다.
+export function을 HTTP methods(GET, PUT, POST, DELETE, PATCH) 와 동일하게 작성하면 된다.
+
+### POST handlers
+
+> [!note] NOTE
+> form actions를 사용하는 것이 여러 측면에서 낫다
+
+/todo/+server.js
+```javascript
+import { json } from '@sveltejs/kit';
+import * as database from '$lib/server/database.js';
+
+export async function POST({ request, cookies }) {
+	const { description } = await request.json();
+
+	const userid = cookies.get('userid');
+	const { id } = await database.createTodo({ userid, description });
+
+	return json({ id }, { status: 201 });
+}
+```
+
++page.svelte
+```javascript
+const response = await fetch('/todo', {
+	method: 'POST',
+	body: JSON.stringify({ description }),
+	headers: {
+		'Content-Type': 'application/json'
+	}
+});
+```
+
+> [!note] NOTE
+> 내가 볼 땐 fetch, axios 사용해서 2중으로 코드 정리할 빠엔 form이 더 깔끔할 것 같긴해.
+
+### Other handlers
+
+코드 참고. (PUT, DELETE)
+
+## *Stores*
+
+### page
+
+```javascript
+<script>
+	import { page } from '$app/stores';
+</script>
+
+$page.url.pathname
+```
+
+이렇게 쓸 수 있음. `url` 외에 여러 가지 변수로 접근할 수 있는데 참고.
+
+### navigating
+
+### updated
+
+둘 다 쓰임새는 알겠는데 잘 쓰이지 않을 것 같음.
+
+## *Errors and redirects*
+
+## Basic
+
+에러에는 expected error 와 unexpected error 가 존재함.
+expected error 는 사용자에게 에러가 보여지며,
+unexpected error 는 사용자에게 500(Internal error)를 주며 개발자에게 에러가 보여짐.
+
+### Error pages
+
+예상되는 에러는 해당 라우팅 폴더 안에 +error.svelte 작성.
+예상되지 않는 에러는 routes 폴더 상위에 +error.svelte 작성.
+
+### Fallback errors
+
+fallback : 대비책
+
+만약 일이 정말 잘못됐을 때,
+예를 들어 root layout data가 오류가 났거나, 오류 페이지 랜더링에서 오류가 났을 경우
+Sveltekit은 static error page를 대비책으로 띄울 것임.
+
+`/src/error.html` 이처럼 src 경로에 error.html을 만들어 줌.
+```html
+<h1>Game over</h1> <p>Code %sveltekit.status%</p> <p>%sveltekit.error.message%</p>
+```
+
+### Redirects
+
+```javascript
+import { redirect } from '@sveltejs/kit'; 
+export function load() { 
+	throw redirect(307, '/b'); 
+}
+```
+
+throw redirect()는 load functions, form actions, API routes, handle hook에 사용할 수 있음.
+
+> [!note] NOTE 
+> redirect를 하는 방법은 다양하다! form 이라면 use:enhance에서 {result} 에 뭔가를 담아서 goto를 사용하면되고 다른건 아직 모르겠음. 보강합시다.
 
