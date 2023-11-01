@@ -9,6 +9,7 @@ kanban-plugin: basic
 - [ ] Promise, Iterator 공부하기!
 - [ ] typescript 정리하기
 - [ ] 얄코 정리(...)
+- [ ] 리눅스 신청 9일까지<br>취업준비제도 신청
 
 
 ## [[취업]]
