@@ -1156,7 +1156,7 @@ $page.url.pathname
 
 ## *Errors and redirects*
 
-## Basic
+### Basic
 
 에러에는 expected error 와 unexpected error 가 존재함.
 expected error 는 사용자에게 에러가 보여지며,
@@ -1193,4 +1193,100 @@ throw redirect()는 load functions, form actions, API routes, handle hook에 사
 
 > [!note] NOTE 
 > redirect를 하는 방법은 다양하다! form 이라면 use:enhance에서 {result} 에 뭔가를 담아서 goto를 사용하면되고 다른건 아직 모르겠음. 보강합시다.
+
+## *Hooks*
+
+### handle
+
++hook.server.js에 `handle` function 작성
+
+요청을 뺏어가서 뭔가를 처리함
+
+### The RequestEvent object
+
+`handle`의 `event`는 
+API routes in `+server.js`
+form actions in `+page.server.js`
+load function in `+page.server.js` and `+layout.server.js`
+에 전달되는 동일한 `event`이다.
+
+`event` 에는 여러가지 속성들이 있음. docs 참고
+
+### handleFetch
+
+`event`에 여러가지 속성들이 있다고 했는데 그 중 `fetch` 도 들어있음.
+
+`fetch` 를 load function에서 하면 `+hooks.server.js` 에서 뺐어서 처리함
+
+### handleError
+
+The `handleError` hook lets you intercept unexpected errors and trigger some behaviour
+`handleError`는 예상치 못한 에러를 가로채고 어떤 행동을 트리거함.
+
+[[#Basic]]에서 unexpected error 가 떴을 때 에러를 던졌는데 이걸 hook이 가로채서 에러를 커스텀할 수 있음.
+
+
+## *Page options*
+
+### Basics
+
+페이지 옵션에는 `ssr`, `csr`, `prerender` `trailingSlash` 가 있음.
+
+`+page.server.js`, `+layout.server.js`에 설정할 수 있고 `+layout.server.js`에 설정하면 Child layouts 까지 적용이 됨. (`+page.js, +layout.js`도 마찬가지)
+
+> [!note] `+page.js` 와 `+page.server.js` 차이??
+> `+page.js` : 페이지와 관련된 로드 기능 수행
+> 	`+page.server.js` : `+page.js`에서 수행하기 적합하지 않은 작업(민감한 작업?), 함수가 서버에서만 실행됨
+
+### ssr
+
+대학교 프로젝트 때 ssr을 모르고 그냥 개발했을 때 애를 좀 먹었었는데 이제 알겠음.
+ssr은 서버에서 요리를 다해서 페이지를 주는거기 때문에 당연히 `browser` 관련 오브젝트에 접근하지 못함.(서버 -> browser인데 서버에서 바로 browser을 쓴다? 말이 안됨)
+
++page.server.js에
+`export const ssr = false;`
+default는 true
+
+root `+laout.server.js` 에 설정하면 전체 앱을 SPA로 만들 수 있음.
+
+### csr
+
++page.server.js에
+`export const csr = false;`
+default는 true
+
+false로 하면 javascript 가 client에 제공되지 않음.
+interactive 가 불가능해짐.
+
+### prerender
+
+[[Prerender]] 란 무엇이냐! 링크를 클릭.
+
++page.server.js에
+`export const prerender = true;`
+
++layout.server.js에
+하면 static site generator(SSG)가 됨.
+
+근데!! 
+Not all pages can be prerendered.
+제약 조건이 있음. (자세한건 필요할 때 찾아봐라.)
+
+### trailingSlash
+
+후행 슬래쉬 
+
+SvelteKit에서는 후행 슬래쉬 다 떼버림.
+
+/foo/bar/ -> directory
+/foo/bar -> file
+
+처음 URL로 홈페이지(index.html)에 진입하는거 아니면 딱히 쓸모없지 않나?
+그래서 다 떼버리는 듯.
+
+`export const trailingSlash = 'always';`
+
+default는 `never`
+
+
 
