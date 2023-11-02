@@ -905,7 +905,7 @@ about 폴더의 `+page.svelte` : /about
 
 ### Route parameters
 
-`src/routes/blog/[slug]/+page.svelte` 의 `[slug]` 와 같이 dynamic parameter를 사용할 수 있음.
+`src/routes/blog/[slug]/+page.svelte` 의 `[slug]` 와 같이 dynamic parameter를 사용할 수 있음. ^16e604
 
 /blog/one, /blog/two 같은 게 가능함.
 
@@ -957,6 +957,11 @@ export function load({ params }) {
 `cookies.get()` `cookies.set(name, value, options)` 를 통해서 읽고 쓸 수 있다.
 
 `options` 의 `path`는 명확하게 설정할 것을 강력하게 추천한다고 하네요.
+
+> [!note] NOTE
+> 쿠키의 path란?
+> - exampleCookie.setPath("/") 처럼 설정하면 모든 경로에서 쿠키를 쓸 수 있다는 뜻(어떤 요청이 오던 cookie 값을 전달해주겠다.)
+> - 특정 디렉토리, 특정 경로에서만 쿠키를 쓰고 싶다면 setPath안에 다른 경로를 적어주면 됨.
 
 ## *Shared modules*
 
@@ -1193,6 +1198,14 @@ throw redirect()는 load functions, form actions, API routes, handle hook에 사
 
 > [!note] NOTE 
 > redirect를 하는 방법은 다양하다! form 이라면 use:enhance에서 {result} 에 뭔가를 담아서 goto를 사용하면되고 다른건 아직 모르겠음. 보강합시다.
+> 
+> 보강 1. 
+> form actions 에서 처리하고 `throw redirect(? , '/')`를 던져주면 알아서 redirect 됨.
+> 추가적으로 redirect 주소를 서버에서 굳이 작성해주지 않아도 됨!
+
+==꼭 Tutorial / Part 4 / Advanced routing / Route groups 의 예제를 찾아볼 것==
+
+
 
 ## *Hooks*
 
@@ -1288,5 +1301,84 @@ SvelteKit에서는 후행 슬래쉬 다 떼버림.
 
 default는 `never`
 
+## *Link options*
+
+### Preloading
+
+`<a>`에 `data-sveltekit-preload-data` 속성을 사용하면 좀 더 빠르게 링킹이 된다고 한다.
+
+너무 미세한 차이라 나중에 필요하면 사용하자.
+
+### Reloading the page
+
+Sveltekit 은 페이지를 옮겨다닐 때 without refreshing page.
+
+근데 `<nav data-sveltekit-reload>` 를 사용하면 refreshing page를 없앨 수 있음.
+
+## *Advanced routing*
+
+### Optional parameter
+
+[[#^16e604]] 와 같이 SvelteKit은 dynamic parameter 을 사용할 수 있는데 
+
+`[[route]]` double brakets를 사용하면 parameter을 선택사항으로 만들 수 있음.
+경로로 예를 들면 `/Code/...` 임
+
+예제를 참고하면 바로 이해될 거고, 아직 어떻게 활용할지는 잘 모르겠음. 필요하면 쓰기.
+
+### Rest parameter
+
+Javascript rest parameter와 같이 route에 `[...rest]` 를 사용하면 중첩적으로 파라미터를 사용할 수 있게됨.
+
+라우트 폴더를 중첩적으로 만들지 않아도 될듯함.
+
+++
+
+```
+src/routes/ 
+├ categories/ 
+│ ├ animal/ 
+│ ├ mineral/ 
+│ ├ vegetable/ 
+│ ├ [...catchall]/ 
+│ │ ├ +error.svelte 
+│ │ └ +page.server.js
+```
+
+custom 404 page가 필요하면 rest parameter을 사용해서 `/categories/...`  아래에 만들어줄 수 있음. `+page.server.js` 에서 `throw error(404)`를 던져주면됨.
+
+### Param matchers 
+
+안되는데 ? 컷
+
+### Routes groups 
+
+==이건 매우 유용할 듯==
+
+괄호를 사용해서 Routes의 group을 설정할 수 있음. `(auted)` 로 routes 를 묶음! 그냥 명시적인 묶음이지 실제 url에는 포함되지 않음.
+
+예제 참고
+```
+src/routes/ 
+├ (authed)/ 
+│ ├ account/ 
+│ ├ app/ 
+│ ├ +layout.server.js/ 
+│ ├ +layout.svelte/ 
+├ about/ 
+...
+```
+
+`+layout.svelte.js`에서 사용자가 인가됐는지 확인하는 코드를 작성하면 됨.
 
 
+### Breaking out of layouts
+레이아웃에서 벗어나기
+
+현재 경로의 `+page.svelte`를 현재 경로에 있는 `+layout.svelte`가 아니라 다른 상위 `+layout.svelte`로 적용하고 싶을 때가 있을 수 있다.(아직은 없었지만)
+
+그럴 때 `@` sign을 이용하면 된다.
+
+`+page@b.svelte` 이렇게. (예제 참고)
+
+But! root layout은 모든 페이지에 적용되는 놈이라 you cannot break out of it. (벗어날 수 없다.)
