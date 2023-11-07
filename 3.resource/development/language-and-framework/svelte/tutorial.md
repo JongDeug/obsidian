@@ -1248,8 +1248,15 @@ The `handleError` hook lets you intercept unexpected errors and trigger some b
 `+page.server.js`, `+layout.server.js`에 설정할 수 있고 `+layout.server.js`에 설정하면 Child layouts 까지 적용이 됨. (`+page.js, +layout.js`도 마찬가지)
 
 > [!note] `+page.js` 와 `+page.server.js` 차이??
-> `+page.js` : 페이지와 관련된 로드 기능 수행
-> 	`+page.server.js` : `+page.js`에서 수행하기 적합하지 않은 작업(민감한 작업?), 함수가 서버에서만 실행됨
+> `+page.js` : 페이지와 관련된 로드 기능 수행, SSR, CSR 둘다 작동.
+> `+page.server.js` : `+page.js`에서 수행하기 적합하지 않은 작업(민감한 작업?), 함수가 서버에서만 실행됨, SSR에서만 작동
+> 
+> 그럼 둘 중 뭘 써야할까?
+> Server `load` functions(`+page.server.js`) are convenient when you need to access data directly from a database or filesystem, or need to use private environment variables.
+> 
+> Universal `load` functions(`+page.js`) are useful when you need to `fetch` data from an external API and don't need private credentials, since SvelteKit can get the data directly from the API rather than going via your server. They are also useful when you need to return something that can't be serialized, such as a Svelte component constructor.
+> 
+
 
 ### ssr
 
@@ -1369,7 +1376,7 @@ src/routes/
 ...
 ```
 
-`+layout.svelte.js`에서 사용자가 인가됐는지 확인하는 코드를 작성하면 됨.
+`+layout.server.js`에서 사용자가 인가됐는지 확인하는 코드를 작성하면 됨.
 
 
 ### Breaking out of layouts
@@ -1382,3 +1389,109 @@ src/routes/
 `+page@b.svelte` 이렇게. (예제 참고)
 
 But! root layout은 모든 페이지에 적용되는 놈이라 you cannot break out of it. (벗어날 수 없다.)
+
+
+
+## *Advanced loading*
+
+### Universal load functions
+
+`+page.server.js` 의 `load`는 Server `load` function.
+`+page.js`의 `load`는 Universal `load` function.
+
+이때까지 `+page.server.js` 만 사용하면 될 줄 알았는데 그게 아니었다.
+상황에 따라 적합한 것을 사용하면 된다.
+
+Server `load` function(`+page.server.js`) 은 데이터베이스나 파일 시스템에서 데이터를 바로 가져올 수 있을 때, private 환경 변수를 사용할 때 활용하면 된다.
+
+Universal `load` function(`+page.js` 은 외부 API를 fetch로 가져올 때(서버를 통해 가져오는 것이 아님), private credentials이 필요하지 않을 때, Svelte component constructor와 같이 직렬화를 할 수 없는 것을 반환해야 할 때 사용하면 된다.
+
+드물지만 때에 따라서 둘 다 사용해야 할 때도 있다.
+
+[Universal vs Server](https://kit.svelte.dev/docs/load#universal-vs-server)
+
+### Using both load functions
+
+둘 다 사용해야 할 때도 있음.
+data 방향 : `+page.server.js` => `+page.js`, 그 역은 안됨.
+
++page.js에서 +page.server.js 의 return 값을 data로 받아들임.
+```javascript
+export async function load({ data }) {}
+```
+
+예제를 보면 쉽게 이해할 수 있음.
+
+### Using parent data
+
+예제를 보면 이해가 빠를 거임.
+
+주의해야 할 게 Universal `load` function은 parent server `load` function의 data를 얻을 수 있지만 그 반대는 안됨.
+즉, Server `load` function은 오직 다른 server `load` function의 parent data만 얻을 수 있음.
+
+### Invalidation
+
+Invalidate : to officially stop a document, contract ,,,
+
+예제에서 [...timezone]/+page.js 만 re-run 되고 +layout.js 의 `load` function은 re-run 되지 않음.
+
+==`invalidate` function을 사용하면 해당 URL에 의존하는 `load` functions 들을 re-run 하게 만듦.==
+
+이 `invalidate` function을 예제처럼 +page.svelte에서 사용하면 시간이 계속 바뀌게 됨.
+`onMount` 대신 `afterUpdate`, `beforeUpdate` 안에서 사용해도 작동됨. 왜냐하면 re-run 하면 data가 바뀌기 때문에 `afterUpdate`, `beforeUpdate`가 작동됨.
+
+### Custom dependencies
+
+`fetch`를 사용하기 적절하지 않을 때가 있다. 그럴 땐 invalidate할 url가 없는데 어떻게 `invalidate` 하냐?
+
+`depends(url)`를 통해 수동으로 지정할 수 있음.
+
+예제에서 invalidation key는 `data:now` 임.
+
+### invalidateAll
+
+there's the nuclear option - `invalidateAll()`
+
+현재 페이지에 대해 모든 `load` functions 들을 무차별적으로 재작동 시킬 수 있다.
+
+## *Environment variables*
+
+### $env/static/private
+
+전 프로젝트를 할 때 `.env` 파일을 만들어서 중요 내용들을 저장했음.
+
+`$env/static/private`을 통해서 활용 가능함.
+
+.env
+`PASSPHRASE="open sesame"`
+
++page.server.js
+`import { PASSPHRASE } from '$env/static/private';`
+
+**Keeping secrets**
+`+page.svelte.js` 에서 `$env/static/private`를 import 하면 Sveltekit이 알아서 알아서 경고 해줌.
+
+It can only be imported into server modules:
+- `+page.server.js`
+- `+layout.server.js`
+- `+server.js`
+- any modules ending with `.server.js`
+- any modules inside `src/lib/server`
+
+### $env/dynamic/private
+
+접근 방식에 static과 dynamic이 존재함.
+
+static
+`import { FEATURE_FLAG_X } from '$env/static/private';`
+앱이 빌드될 때
+
+dynamic
+`import { env } from '$env/dynamic/private';`
+`const dynamic = evn.FEATURE_FLAG_X;`
+반대로 앱이 실행될 때
+
+### $env/static/public
+
+public이라 클라이언트 코드에 import 해도 에러를 주지 않는다.
+
