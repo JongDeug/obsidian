@@ -455,6 +455,9 @@ set, update 없이 바로 가능하네 좋다!
 
 - fade
 - fly
+- blur
+- slide
+- scale
 - In and out(fade와 fly 등을 컨트롤 할 수 있음)
 
 ### Custom CSS transitions, Custom JS transitions
@@ -504,7 +507,7 @@ Svelte 3에서는 `global`이 default 값이라 로컬로 바꿔주고 싶으면
 근데 `animate` directive를 사용해서  `animate:flip={{duration:1000}}` 을 했더니 !!
 나머지 리스트들이 이쁘게 올라오고 내려갔다.
 
-## *Actions*
+	## *Actions*
 
 ### The use directive
 
