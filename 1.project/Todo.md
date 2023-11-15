@@ -8,7 +8,9 @@ kanban-plugin: basic
 
 - [ ] Promise, Iterator 공부하기!
 - [ ] typescript 정리하기
-- [ ] 얄코 정리(WAS, Web Server, SPA...)
+- [ ] 얄코 정리(...)
+- [ ] 리눅스 신청 9일까지<br>취업준비제도 신청
+- [ ] 세계문화이해 과제 @{2023-11-24}
 
 
 ## [[취업]]
@@ -24,10 +26,9 @@ kanban-plugin: basic
 
 ## 금토일월
 
-- [ ] 파이썬 문법
 - [ ] 파이썬으로 배우는 자료구조
 - [ ] 백준
-- [ ] 포폴 관련 개발 공부<br>- typescript handbook<br>- nestJs ^23dhm9
+- [ ] 포폴 관련 개발 공부<br>- jest<br>- nestjs ^23dhm9
 - [ ] 영어
 
 
@@ -56,6 +57,9 @@ kanban-plugin: basic
 - [ ] 이슈 로그, 트러블 슈팅 가이드
 - [ ] 이산수학 2장 과제 @{2023-10-12} @@{11:30}
 - [ ] 개발자 기초 그림으로 정리하기
+- [ ] svelte named form action 확인하기
+- [ ] 확률과통계 코딩 과제 @{2023-11-16}
+- [ ] 파이썬 문법
 
 %% kanban:settings
 ```

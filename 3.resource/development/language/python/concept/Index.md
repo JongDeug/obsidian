@@ -37,8 +37,20 @@
 
 - 🟦 [[Module]]
 ## 🟨 Class 
+## 🟨 Frequently used grammar(Coding Test)
 
-- 🟦 [[Class]]
+- char to ascii code(unicode)
+`ord()`
+
+- 문자열 함수
+원하는 문자 인덱스 반환
+`find()`
+
+문자 삭제, 원하는 문자로 교체
+`replace()`
+
+
+
 
 
 

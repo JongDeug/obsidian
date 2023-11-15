@@ -455,6 +455,9 @@ set, update 없이 바로 가능하네 좋다!
 
 - fade
 - fly
+- blur
+- slide
+- scale
 - In and out(fade와 fly 등을 컨트롤 할 수 있음)
 
 ### Custom CSS transitions, Custom JS transitions
@@ -504,7 +507,7 @@ Svelte 3에서는 `global`이 default 값이라 로컬로 바꿔주고 싶으면
 근데 `animate` directive를 사용해서  `animate:flip={{duration:1000}}` 을 했더니 !!
 나머지 리스트들이 이쁘게 올라오고 내려갔다.
 
-## *Actions*
+	## *Actions*
 
 ### The use directive
 
@@ -840,7 +843,6 @@ or
 예제를 보면 Board.svelte의 `<div class="board" style="--size: {size}">` 에 직계 자손이여야 하는데 App.svelte의 `<div slot="game">`에 직계 자손이므로 `<svelte:fragment>` 를 사용하면 해결됨.
 
 
-
 ## *Module context*
 
 ### Sharing code
@@ -906,7 +908,7 @@ about 폴더의 `+page.svelte` : /about
 
 ### Route parameters
 
-`src/routes/blog/[slug]/+page.svelte` 의 `[slug]` 와 같이 dynamic parameter를 사용할 수 있음.
+`src/routes/blog/[slug]/+page.svelte` 의 `[slug]` 와 같이 dynamic parameter를 사용할 수 있음. ^16e604
 
 /blog/one, /blog/two 같은 게 가능함.
 
@@ -920,13 +922,26 @@ Mutiple oute parameters도 된다는데 잘 모르겠음.
 
 예제에서는 튜토리얼이라 `data.js` 를 import 했지만 database에서 가져와서 `load` 해도 됨!
 
+throw error! 에러 던지기
+```javascript
+import { error } from '@sveltejs/kit'; 
+import { posts } from '../data.js'; 
+
+export function load({ params }) {
+	const post = posts.find((post) => post.slug === params.slug); 
+	
+	if (!post) throw error(404); 
+	
+	return { post }; 
+}
+```
+
 ### Layout data
 
 `+layout.server.js` 에 `load` function을 사용하면 자식 route 까지 데이터를 loading 할 수 있음.
 
-기존 `+page.server.js` 는 해당 `+page.svetle` 에서 밖에 사용하지 못했음.
+기존 `+page.server.js` 는 해당 `+page.svelte` 에서 밖에 사용하지 못했음.
 `+layout.server.js` 를 사용하면 `+page.svelte` 뿐만 아니라 자식 route 의 `+page.svelte` 에서도 데이터를 사용할 수 있다.
-
 
 ## *Headers and cookies*
 
@@ -946,8 +961,10 @@ Mutiple oute parameters도 된다는데 잘 모르겠음.
 
 `options` 의 `path`는 명확하게 설정할 것을 강력하게 추천한다고 하네요.
 
-
-
+> [!note] NOTE
+> 쿠키의 path란?
+> - exampleCookie.setPath("/") 처럼 설정하면 모든 경로에서 쿠키를 쓸 수 있다는 뜻(어떤 요청이 오던 cookie 값을 전달해주겠다.)
+> - 특정 디렉토리, 특정 경로에서만 쿠키를 쓰고 싶다면 setPath안에 다른 경로를 적어주면 됨.
 
 ## *Shared modules*
 
@@ -969,3 +986,515 @@ Mutiple oute parameters도 된다는데 잘 모르겠음.
 `+page.server.js` 에 `actions` 함수를 만들어서 POST 되면 리스트가 생성된다. 코드를 자세히 참고하면 되겠다.
 
 `<form>` 태그를 사용했기 때문에 `fetch` 같은 걸 사용할 필요도 없고 Javascript가 작동되지 않거나 사용하지 않아도 작동이 가능하다.
+<<<<<<< HEADF
+
+### Named form actions
+
+`actions` function 에 `default` 말고도 원하는 이름을 지을 수 있다. 
+구현은 예제 참고!
+
+`<form method="POST" action="?/delete">` 
+`form` 태그의 `action` 속성에 경로와 원하는 이름을 설정하고 `+page.server.js`안에 `action` 객체 안에 `delete` function을 구현하면 된다.
+
+`action` function이 다른 페이지에 정의됐다면  `/todos?/delete` 와 같이 `?` 앞에 경로를 맞추면 된다.
+
+### Validation
+
+사용자는 말썽꾸러기들이라 요청한 값이 쓸모없거나 위험한 값일 수도 있다.
+
+막는 방법은
+
+1. 프론트 단에서 막기
+2. 서버에서 막기
+3. DB에서 막기
+
+정도가 되겠는데 
+
+프론트 단에서 막기는 쉬우니까 제외하고 
+
+서버에서 value checking 을 통해 해결하고 오류가 발생할 경우 `throw new Error`를 사용하면 된다.
+
+`+page.server.js` 에서는 
+
+```javascript
+import { fail } from '@sveltejs/kit';
+import * as db from '$lib/server/database.js'; 
+
+export function load({ cookies }) {...} 
+export const actions = { 
+	create: async ({ cookies, request }) => {
+	 const data = await request.formData(); 
+	 try { 
+		 db.createTodo(cookies.get('userid'), 
+		 data.get('description')); 
+	} catch (error) {
+		 return fail(422, { 
+			 description: data.get('description'), 
+			 error: error.message }); 
+		} 
+	}
+```
+
+와 같이 `fail` 을 사용하여 에러를 던져주면 된다.
+
+하지만 이 에러를 유저가 어떻게 확인해야 할까?
+
+바로 `+page.svelte` 에서 `export let form` 선언하고 `form` 객체를 사용해서 페이지에 나타내면 된다!!
+(+굳이 `fail` 로 묶지 않아도 됨.)
+
+### Progressively Enhance
+
+`form` 태그는 사용자가 Javascript를 가지고 있지 않아도 기능이 실행됨.
+
+근데 대부분의 사용자가 Javascript를 가지고 있기 때문에 
+`import { enhance } from '$app/forms';`
+`<form method="POST" action="?/create" use:enhance>`
+
+이렇게 `form` 태그에 `use:enhance`를 사용하면 full-page reload 기능 빼고 브라우저의 기본 행동을 에뮬레이트 할 것임.
+
+즉, `form` 태그의 기능이 강화됨. 
+기존에는 적용되지 않던 Transition 같은 기능을 사용할 수 있고, 여러 가지 기능들이 업그레이드 된다는 데 읽어봐도 잘 모르겠음. (튜토리얼 참고하면 나옴)
+
+
+### Customizing use:enhance
+
+예제에서 slow networking을 시뮬레이트 함.
+`await new Promise((fulfil) => setTimeout(fulfil, 1000));`
+
+`use:enhance`를 통해서 느린 네트워크에서 create, delete 할 때의 동작을 컨트롤함.
+
+create 중일 때는 `input` 태그의 disabled 속성을 컨트롤하고 로딩 동작을 추가.
+
+delete 중일 때는 네트워크가 느려도 DB에서와는 다르게 유저에게 바로 삭제되는 모습을 보여주기 위해 `deleting` 배열을 만들어서 컨트롤함. 
+코드에서 `await` 가 있는데 어떻게 `todos`를 바로 컨트롤 하여 보여주지? 라는 의문점을 가졌는데 `deleting` 배열이 변경 됨에 따라 `{#each data.todos.filter((todo) => !deleting.includes(todo.id)) as todo (todo.id)}` 이 코드도 같이 실행되게 때문에 컨트롤이 가능하다는 결론을 내렸음.
+
+===`use:enhance={function}` 의 function을 통해서 submit 할 때의 동작을 결정할 수 있는 것 같음.===
+
+> [!note] NOTE
+> It's a little confusing that the `enhance` action and `<form action>` are both called 'action'. 
+> 기존 html submit 버튼? 이 없어서 헷갈렸는데 둘 다 똑같이 action function을 호출하기 때문에 저기서 백엔드 API를 호출하면 될 것 같음.
+> 
+> + submit 할 때 프론트 단에서의 변경을 컨트롤 하려면 highlight와 같이 function에 뭔가를 넣으면 되고, 백엔드 API를 호출 시 컨트롤 동작은 `+page.server.js` 의 action function에서 구현하면 될 것 같음. 그러면 코드도 분리되고 깔끔하게 개발할 수 있을 것 같음.
+
+`use:enhance` 에는 다양한 이벤트들이 있으므로 Docs를 참고할 것.
+
+## *API routes*
+
+### GET handlers
+
+/roll/+server.js
+```javascript
+import { json } from '@sveltejs/kit';
+
+export function GET() {
+	const number = Math.floor(Math.random() * 6) + 1;
+
+	return json(number);
+}
+```
+
++page.svelte
+```javascript
+async function roll() {
+	const response = await fetch('/roll');
+	number = await response.json();
+}
+```
+
+fetch 를 사용하는 방법도 있다.
+export function을 HTTP methods(GET, PUT, POST, DELETE, PATCH) 와 동일하게 작성하면 된다.
+
+### POST handlers
+
+> [!note] NOTE
+> form actions를 사용하는 것이 여러 측면에서 낫다
+
+/todo/+server.js
+```javascript
+import { json } from '@sveltejs/kit';
+import * as database from '$lib/server/database.js';
+
+export async function POST({ request, cookies }) {
+	const { description } = await request.json();
+
+	const userid = cookies.get('userid');
+	const { id } = await database.createTodo({ userid, description });
+
+	return json({ id }, { status: 201 });
+}
+```
+
++page.svelte
+```javascript
+const response = await fetch('/todo', {
+	method: 'POST',
+	body: JSON.stringify({ description }),
+	headers: {
+		'Content-Type': 'application/json'
+	}
+});
+```
+
+> [!note] NOTE
+> 내가 볼 땐 fetch, axios 사용해서 2중으로 코드 정리할 빠엔 form이 더 깔끔할 것 같긴해.
+
+### Other handlers
+
+코드 참고. (PUT, DELETE)
+
+## *Stores*
+
+### page
+
+```javascript
+<script>
+	import { page } from '$app/stores';
+</script>
+
+$page.url.pathname
+```
+
+이렇게 쓸 수 있음. `url` 외에 여러 가지 변수로 접근할 수 있는데 참고.
+
+### navigating
+
+### updated
+
+둘 다 쓰임새는 알겠는데 잘 쓰이지 않을 것 같음.
+
+## *Errors and redirects*
+
+### Basic
+
+에러에는 expected error 와 unexpected error 가 존재함.
+expected error 는 사용자에게 에러가 보여지며,
+unexpected error 는 사용자에게 500(Internal error)를 주며 개발자에게 에러가 보여짐.
+
+### Error pages
+
+예상되는 에러는 해당 라우팅 폴더 안에 +error.svelte 작성.
+예상되지 않는 에러는 routes 폴더 상위에 +error.svelte 작성.
+
+### Fallback errors
+
+fallback : 대비책
+
+만약 일이 정말 잘못됐을 때,
+예를 들어 root layout data가 오류가 났거나, 오류 페이지 랜더링에서 오류가 났을 경우
+Sveltekit은 static error page를 대비책으로 띄울 것임.
+
+`/src/error.html` 이처럼 src 경로에 error.html을 만들어 줌.
+```html
+<h1>Game over</h1> <p>Code %sveltekit.status%</p> <p>%sveltekit.error.message%</p>
+```
+
+### Redirects
+
+```javascript
+import { redirect } from '@sveltejs/kit'; 
+export function load() { 
+	throw redirect(307, '/b'); 
+}
+```
+
+throw redirect()는 load functions, form actions, API routes, handle hook에 사용할 수 있음.
+
+> [!note] NOTE 
+> redirect를 하는 방법은 다양하다! form 이라면 use:enhance에서 {result} 에 뭔가를 담아서 goto를 사용하면되고 다른건 아직 모르겠음. 보강합시다.
+> 
+> 보강 1. 
+> form actions 에서 처리하고 `throw redirect(? , '/')`를 던져주면 알아서 redirect 됨.
+> 추가적으로 redirect 주소를 서버에서 굳이 작성해주지 않아도 됨!
+
+==꼭 Tutorial / Part 4 / Advanced routing / Route groups 의 예제를 찾아볼 것==
+
+
+
+## *Hooks*
+
+### handle
+
++hook.server.js에 `handle` function 작성
+
+요청을 뺏어가서 뭔가를 처리함
+
+### The RequestEvent object
+
+`handle`의 `event`는 
+API routes in `+server.js`
+form actions in `+page.server.js`
+load function in `+page.server.js` and `+layout.server.js`
+에 전달되는 동일한 `event`이다.
+
+`event` 에는 여러가지 속성들이 있음. docs 참고
+
+### handleFetch
+
+`event`에 여러가지 속성들이 있다고 했는데 그 중 `fetch` 도 들어있음.
+
+`fetch` 를 load function에서 하면 `+hooks.server.js` 에서 뺐어서 처리함
+
+### handleError
+
+The `handleError` hook lets you intercept unexpected errors and trigger some behaviour
+`handleError`는 예상치 못한 에러를 가로채고 어떤 행동을 트리거함.
+
+[[#Basic]]에서 unexpected error 가 떴을 때 에러를 던졌는데 이걸 hook이 가로채서 에러를 커스텀할 수 있음.
+
+
+## *Page options*
+
+### Basics
+
+페이지 옵션에는 `ssr`, `csr`, `prerender` `trailingSlash` 가 있음.
+
+`+page.server.js`, `+layout.server.js`에 설정할 수 있고 `+layout.server.js`에 설정하면 Child layouts 까지 적용이 됨. (`+page.js, +layout.js`도 마찬가지)
+
+> [!note] `+page.js` 와 `+page.server.js` 차이??
+> `+page.js` : 페이지와 관련된 로드 기능 수행, SSR, CSR 둘다 작동.
+> `+page.server.js` : `+page.js`에서 수행하기 적합하지 않은 작업(민감한 작업?), 함수가 서버에서만 실행됨, SSR에서만 작동
+> 
+> 그럼 둘 중 뭘 써야할까?
+> Server `load` functions(`+page.server.js`) are convenient when you need to access data directly from a database or filesystem, or need to use private environment variables.
+> 
+> Universal `load` functions(`+page.js`) are useful when you need to `fetch` data from an external API and don't need private credentials, since SvelteKit can get the data directly from the API rather than going via your server. They are also useful when you need to return something that can't be serialized, such as a Svelte component constructor.
+> 
+
+
+### ssr
+
+대학교 프로젝트 때 ssr을 모르고 그냥 개발했을 때 애를 좀 먹었었는데 이제 알겠음.
+ssr은 서버에서 요리를 다해서 페이지를 주는거기 때문에 당연히 `browser` 관련 오브젝트에 접근하지 못함.(서버 -> browser인데 서버에서 바로 browser을 쓴다? 말이 안됨)
+
++page.server.js에
+`export const ssr = false;`
+default는 true
+
+root `+laout.server.js` 에 설정하면 전체 앱을 SPA로 만들 수 있음.
+
+### csr
+
++page.server.js에
+`export const csr = false;`
+default는 true
+
+false로 하면 javascript 가 client에 제공되지 않음.
+interactive 가 불가능해짐.
+
+### prerender
+
+[[Prerender]] 란 무엇이냐! 링크를 클릭.
+
++page.server.js에
+`export const prerender = true;`
+
++layout.server.js에
+하면 static site generator(SSG)가 됨.
+
+근데!! 
+Not all pages can be prerendered.
+제약 조건이 있음. (자세한건 필요할 때 찾아봐라.)
+
+### trailingSlash
+
+후행 슬래쉬 
+
+SvelteKit에서는 후행 슬래쉬 다 떼버림.
+
+/foo/bar/ -> directory
+/foo/bar -> file
+
+처음 URL로 홈페이지(index.html)에 진입하는거 아니면 딱히 쓸모없지 않나?
+그래서 다 떼버리는 듯.
+
+`export const trailingSlash = 'always';`
+
+default는 `never`
+
+## *Link options*
+
+### Preloading
+
+`<a>`에 `data-sveltekit-preload-data` 속성을 사용하면 좀 더 빠르게 링킹이 된다고 한다.
+
+너무 미세한 차이라 나중에 필요하면 사용하자.
+
+### Reloading the page
+
+Sveltekit 은 페이지를 옮겨다닐 때 without refreshing page.
+
+근데 `<nav data-sveltekit-reload>` 를 사용하면 refreshing page를 없앨 수 있음.
+
+## *Advanced routing*
+
+### Optional parameter
+
+[[#^16e604]] 와 같이 SvelteKit은 dynamic parameter 을 사용할 수 있는데 
+
+`[[route]]` double brakets를 사용하면 parameter을 선택사항으로 만들 수 있음.
+경로로 예를 들면 `/Code/...` 임
+
+예제를 참고하면 바로 이해될 거고, 아직 어떻게 활용할지는 잘 모르겠음. 필요하면 쓰기.
+
+### Rest parameter
+
+Javascript rest parameter와 같이 route에 `[...rest]` 를 사용하면 중첩적으로 파라미터를 사용할 수 있게됨.
+
+라우트 폴더를 중첩적으로 만들지 않아도 될듯함.
+
+++
+
+```
+src/routes/ 
+├ categories/ 
+│ ├ animal/ 
+│ ├ mineral/ 
+│ ├ vegetable/ 
+│ ├ [...catchall]/ 
+│ │ ├ +error.svelte 
+│ │ └ +page.server.js
+```
+
+custom 404 page가 필요하면 rest parameter을 사용해서 `/categories/...`  아래에 만들어줄 수 있음. `+page.server.js` 에서 `throw error(404)`를 던져주면됨.
+
+### Param matchers 
+
+안되는데 ? 컷
+
+### Routes groups 
+
+==이건 매우 유용할 듯==
+
+괄호를 사용해서 Routes의 group을 설정할 수 있음. `(auted)` 로 routes 를 묶음! 그냥 명시적인 묶음이지 실제 url에는 포함되지 않음.
+
+예제 참고
+```
+src/routes/ 
+├ (authed)/ 
+│ ├ account/ 
+│ ├ app/ 
+│ ├ +layout.server.js/ 
+│ ├ +layout.svelte/ 
+├ about/ 
+...
+```
+
+`+layout.server.js`에서 사용자가 인가됐는지 확인하는 코드를 작성하면 됨.
+
+
+### Breaking out of layouts
+레이아웃에서 벗어나기
+
+현재 경로의 `+page.svelte`를 현재 경로에 있는 `+layout.svelte`가 아니라 다른 상위 `+layout.svelte`로 적용하고 싶을 때가 있을 수 있다.(아직은 없었지만)
+
+그럴 때 `@` sign을 이용하면 된다.
+
+`+page@b.svelte` 이렇게. (예제 참고)
+
+But! root layout은 모든 페이지에 적용되는 놈이라 you cannot break out of it. (벗어날 수 없다.)
+
+
+
+## *Advanced loading*
+
+### Universal load functions
+
+`+page.server.js` 의 `load`는 Server `load` function.
+`+page.js`의 `load`는 Universal `load` function.
+
+이때까지 `+page.server.js` 만 사용하면 될 줄 알았는데 그게 아니었다.
+상황에 따라 적합한 것을 사용하면 된다.
+
+Server `load` function(`+page.server.js`) 은 데이터베이스나 파일 시스템에서 데이터를 바로 가져올 수 있을 때, private 환경 변수를 사용할 때 활용하면 된다.
+
+Universal `load` function(`+page.js` 은 외부 API를 fetch로 가져올 때(서버를 통해 가져오는 것이 아님), private credentials이 필요하지 않을 때, Svelte component constructor와 같이 직렬화를 할 수 없는 것을 반환해야 할 때 사용하면 된다.
+
+드물지만 때에 따라서 둘 다 사용해야 할 때도 있다.
+
+[Universal vs Server](https://kit.svelte.dev/docs/load#universal-vs-server)
+
+### Using both load functions
+
+둘 다 사용해야 할 때도 있음.
+data 방향 : `+page.server.js` => `+page.js`, 그 역은 안됨.
+
++page.js에서 +page.server.js 의 return 값을 data로 받아들임.
+```javascript
+export async function load({ data }) {}
+```
+
+예제를 보면 쉽게 이해할 수 있음.
+
+### Using parent data
+
+예제를 보면 이해가 빠를 거임.
+
+주의해야 할 게 Universal `load` function은 parent server `load` function의 data를 얻을 수 있지만 그 반대는 안됨.
+즉, Server `load` function은 오직 다른 server `load` function의 parent data만 얻을 수 있음.
+
+### Invalidation
+
+Invalidate : to officially stop a document, contract ,,,
+
+예제에서 [...timezone]/+page.js 만 re-run 되고 +layout.js 의 `load` function은 re-run 되지 않음.
+
+==`invalidate` function을 사용하면 해당 URL에 의존하는 `load` functions 들을 re-run 하게 만듦.==
+
+이 `invalidate` function을 예제처럼 +page.svelte에서 사용하면 시간이 계속 바뀌게 됨.
+`onMount` 대신 `afterUpdate`, `beforeUpdate` 안에서 사용해도 작동됨. 왜냐하면 re-run 하면 data가 바뀌기 때문에 `afterUpdate`, `beforeUpdate`가 작동됨.
+
+### Custom dependencies
+
+`fetch`를 사용하기 적절하지 않을 때가 있다. 그럴 땐 invalidate할 url가 없는데 어떻게 `invalidate` 하냐?
+
+`depends(url)`를 통해 수동으로 지정할 수 있음.
+
+예제에서 invalidation key는 `data:now` 임.
+
+### invalidateAll
+
+there's the nuclear option - `invalidateAll()`
+
+현재 페이지에 대해 모든 `load` functions 들을 무차별적으로 재작동 시킬 수 있다.
+
+## *Environment variables*
+
+### $env/static/private
+
+전 프로젝트를 할 때 `.env` 파일을 만들어서 중요 내용들을 저장했음.
+
+`$env/static/private`을 통해서 활용 가능함.
+
+.env
+`PASSPHRASE="open sesame"`
+
++page.server.js
+`import { PASSPHRASE } from '$env/static/private';`
+
+**Keeping secrets**
+`+page.svelte.js` 에서 `$env/static/private`를 import 하면 Sveltekit이 알아서 알아서 경고 해줌.
+
+It can only be imported into server modules:
+- `+page.server.js`
+- `+layout.server.js`
+- `+server.js`
+- any modules ending with `.server.js`
+- any modules inside `src/lib/server`
+
+### $env/dynamic/private
+
+접근 방식에 static과 dynamic이 존재함.
+
+static
+`import { FEATURE_FLAG_X } from '$env/static/private';`
+앱이 빌드될 때
+
+dynamic
+`import { env } from '$env/dynamic/private';`
+`const dynamic = evn.FEATURE_FLAG_X;`
+반대로 앱이 실행될 때
+
+### $env/static/public
+
+public이라 클라이언트 코드에 import 해도 에러를 주지 않는다.
+
