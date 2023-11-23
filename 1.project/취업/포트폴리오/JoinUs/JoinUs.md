@@ -42,7 +42,7 @@
 ![[Untitled (5).png]]
 
 회원관리
-![[Untitled (6).png]]
+	![[Untitled (6).png]]
 
 ### 2.3 Use Case Descriptions(유스케이스 명세)
 
