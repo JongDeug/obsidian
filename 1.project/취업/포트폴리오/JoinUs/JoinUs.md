@@ -63,3 +63,6 @@
 ## 5. 참고 사이트
 
 [[UML] 유스케이스 다이어그램 (Usecase Diagram) 기초 및 그리는 방법](https://gnaseel.tistory.com/22)
+
+
+다른 역할군이 기능에 참여했을 경우.
