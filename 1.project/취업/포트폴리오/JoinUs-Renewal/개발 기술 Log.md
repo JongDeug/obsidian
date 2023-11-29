@@ -1,0 +1,2 @@
+- 프론트엔드 svelte, qord
+- 리뉴얼 전에는 tailwindcss를 사용했는데 공부 목적으로 기본 CSS를 적용하기로 함.
